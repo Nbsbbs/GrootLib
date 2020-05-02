@@ -3,6 +3,11 @@
     "description": "Statistical data processing library",
     "type": "library",
     "require": {
+        "phpunit/phpunit": "^9.2@dev",
+        "smi2/phpclickhouse": "dev-master",
+      "ext-gearman": "*"
+    },
+    "require-dev": {
         "phpunit/phpunit": "^9.2@dev"
     },
     "authors": [
@@ -11,5 +16,8 @@
             "email": "nbsbbs@gmail.com"
         }
     ],
-    "minimum-stability": "dev"
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {"Noobus\\GrootLib\\": "src/"}
+    }
 }

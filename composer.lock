@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5e2fb91306fcbc597bf84ccfa30e9d13",
+    "content-hash": "41b36148e24323cfa32007b0724d07cc",
     "packages": [
         {
             "name": "doctrine/instantiator",
@@ -1494,6 +1494,60 @@
             "time": "2020-01-21T06:36:37+00:00"
         },
         {
+            "name": "smi2/phpclickhouse",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/smi2/phpClickHouse.git",
+                "reference": "806629d9308ea3099743803b0a5a2311da403daa"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/smi2/phpClickHouse/zipball/806629d9308ea3099743803b0a5a2311da403daa",
+                "reference": "806629d9308ea3099743803b0a5a2311da403daa",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "php": "^7.1"
+            },
+            "require-dev": {
+                "doctrine/coding-standard": "^5.0",
+                "phpstan/phpstan": "^0.10.3",
+                "phpunit/phpunit": "^7",
+                "sebastian/comparator": "~3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "ClickHouseDB\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Igor Strykhar",
+                    "email": "isublimity@gmail.com",
+                    "homepage": "https://github.com/isublimity"
+                }
+            ],
+            "description": "PHP ClickHouse Client",
+            "homepage": "https://github.com/smi2/phpClickHouse",
+            "keywords": [
+                "clickhouse",
+                "client",
+                "curl",
+                "driver",
+                "http",
+                "http client",
+                "php"
+            ],
+            "time": "2020-02-03T12:03:01+00:00"
+        },
+        {
             "name": "symfony/polyfill-ctype",
             "version": "dev-master",
             "source": {
@@ -1644,7 +1698,8 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "phpunit/phpunit": 20
+        "phpunit/phpunit": 20,
+        "smi2/phpclickhouse": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
