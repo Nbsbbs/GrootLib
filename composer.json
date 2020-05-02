@@ -1,0 +1,15 @@
+{
+    "name": "noobus/groot-lib",
+    "description": "Statistical data processing library",
+    "type": "library",
+    "require": {
+        "phpunit/phpunit": "^9.2@dev"
+    },
+    "authors": [
+        {
+            "name": "Noobus",
+            "email": "nbsbbs@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev"
+}
