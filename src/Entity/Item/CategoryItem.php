@@ -7,11 +7,11 @@ namespace Noobus\GrootLib\Entity\Item;
 use Noobus\GrootLib\Entity\ItemInterface;
 
 /**
- * Class ThumbItem
+ * Class CategoryItem
  *
  * @package Noobus\GrootLib\Entity\Item
  */
-class ThumbItem implements ItemInterface
+class CategoryItem implements ItemInterface
 {
     /**
      * @var string
@@ -19,7 +19,7 @@ class ThumbItem implements ItemInterface
     private $id;
 
     /**
-     * ThumbItem constructor.
+     * CategoryItem constructor.
      *
      * @param string $id
      */
@@ -41,7 +41,7 @@ class ThumbItem implements ItemInterface
      */
     public function getType(): string
     {
-        return ItemType::TYPE_THUMB;
+        return ItemType::TYPE_CATEGORY;
     }
 
     /**

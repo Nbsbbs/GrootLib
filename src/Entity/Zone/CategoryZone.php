@@ -5,92 +5,67 @@ declare(strict_types=1);
 namespace Noobus\GrootLib\Entity\Zone;
 
 use Noobus\GrootLib\Entity\ZoneInterface;
+use Noobus\GrootLib\Entity\Zone\ItemValidation\ZoneOfNumericItemsTrait;
 
 /**
  * Class CategoryZone
  *
  * @package Noobus\GrootLib\Entity\Zone
  */
-class CategoryZone implements ZoneInterface
+class CategoryZone extends AbstractZone implements ZoneInterface
 {
-    /**
-     * @var string
-     */
-    private $id;
+    use ZoneOfNumericItemsTrait;
 
     /**
      * @var string
      */
-    private $domain;
+    protected $type = ZoneType::TYPE_CATEGORY;
 
     /**
-     * @var string|null
+     * @var int
      */
-    private $parentId = null;
-
-    /**
-     * @var string|null
-     */
-    private $group = null;
-
-    /**
-     * @var string
-     */
-    private $type = ZoneType::TYPE_CATEGORY;
+    protected $categoryId;
 
     /**
      * CategoryZone constructor.
      *
      * @param string $domain
-     * @param string $id
-     * @param string|null $parentId
+     * @param int $categoryId
+     * @param string $language
      * @param string|null $group
      */
-    public function __construct(string $domain, string $id, string $parentId = null, string $group = null)
-    {
+    public function __construct(
+        string $domain,
+        int $categoryId,
+        string $language = 'en',
+        string $group = null
+    ) {
         $this->domain = $domain;
-        $this->id = $id;
-        $this->parentId = $parentId;
+        $this->categoryId = $categoryId;
         $this->group = $group;
+        $this->language = $language;
     }
 
     /**
-     * @return string
+     * @inheritDoc
      */
-    public function getId(): string
+    public function serialize()
     {
-        return $this->id;
+        return serialize([
+            'domain' => $this->domain,
+            'group' => $this->group,
+            'lang' => $this->language,
+        ]);
     }
 
     /**
-     * @return string
+     * @inheritDoc
      */
-    public function getDomain(): string
+    public function unserialize($serialized)
     {
-        return $this->domain;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getParentId(): ?string
-    {
-        return $this->parentId;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getGroup(): ?string
-    {
-        return $this->group;
-    }
-
-    /**
-     * @return string
-     */
-    public function getType(): string
-    {
-        return $this->type;
+        $data = unserialize($serialized);
+        $this->domain = $data['domain'];
+        $this->group = $data['group'] ?? null;
+        $this->language = $data['lang'] ?? 'en';
     }
 }

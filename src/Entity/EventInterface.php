@@ -10,6 +10,8 @@ interface EventInterface extends \Serializable
     public function getItem(): ItemInterface;
     public function getType(): string;
     public function getTimestamp(): \DateTimeImmutable;
+    public function getAttributes(): array;
+    public function getMetrics(): array;
 
     public function isValid(): bool;
 }

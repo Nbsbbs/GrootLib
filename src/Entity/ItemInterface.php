@@ -8,4 +8,5 @@ interface ItemInterface extends \Serializable
 {
     public function getId(): string;
     public function getType(): string;
+    public function getAttributes(): array;
 }

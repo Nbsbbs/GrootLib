@@ -8,9 +8,11 @@ use Noobus\GrootLib\Entity\Zone\ZoneType;
 
 interface ZoneInterface extends \Serializable
 {
-    public function getId(): string;
+    public function getLanguage(): string;
     public function getDomain(): string;
-    public function getParentId(): ?string;
     public function getGroup(): ?string;
     public function getType(): string;
+    public function getAttributes(): array;
+
+    public function isValidItemId(string $id): bool;
 }
