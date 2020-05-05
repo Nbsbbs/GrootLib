@@ -54,6 +54,7 @@ class CategoryZone extends AbstractZone implements ZoneInterface
         return serialize([
             'domain' => $this->domain,
             'group' => $this->group,
+            'categoryId' => $this->categoryId,
             'lang' => $this->language,
         ]);
     }
@@ -65,6 +66,7 @@ class CategoryZone extends AbstractZone implements ZoneInterface
     {
         $data = unserialize($serialized);
         $this->domain = $data['domain'];
+        $this->categoryId = $data['categoryId'];
         $this->group = $data['group'] ?? null;
         $this->language = $data['lang'] ?? 'en';
     }
