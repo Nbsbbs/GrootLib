@@ -19,21 +19,36 @@ class ThumbItem implements ItemInterface
     private $id;
 
     /**
+     * @var string
+     */
+    private $galleryId;
+
+    /**
      * ThumbItem constructor.
      *
      * @param string $id
+     * @param string $galleryId
      */
-    public function __construct(string $id)
+    public function __construct(string $id, string $galleryId)
     {
         $this->id = $id;
+        $this->galleryId = $galleryId;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId(): string
+    {
+        return (string) $this->id;
     }
 
     /**
      * @return string
      */
-    public function getId(): string
+    public function getGalleryId(): string
     {
-        return $this->id;
+        return (string) $this->galleryId;
     }
 
     /**
@@ -49,7 +64,10 @@ class ThumbItem implements ItemInterface
      */
     public function serialize()
     {
-        return $this->id;
+        return serialize([
+            'id' => $this->id,
+            'galleryId' => $this->galleryId,
+            ]);
     }
 
     /**
@@ -60,7 +78,9 @@ class ThumbItem implements ItemInterface
         if (empty($serialized)) {
             throw new \InvalidArgumentException('Invalid value '.$serialized.' for field "id"');
         }
-        $this->id = $serialized;
+        $unserialized = unserialize($serialized);
+        $this->id = $serialized['id'];
+        $this->galleryId = $serialized['galleryId'];
     }
 
     /**
