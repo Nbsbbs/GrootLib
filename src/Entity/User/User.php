@@ -38,13 +38,13 @@ class User implements UserInterface
         return 0;
     }
 
-    public function sourceType(): int
+    public function sourceType(): string
     {
-        return 0;
+        return 'unknown';
     }
 
-    public function sourceUrl(): int
+    public function sourceUrl(): string
     {
-        return 0;
+        return '';
     }
 }

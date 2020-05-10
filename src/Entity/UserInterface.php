@@ -12,6 +12,6 @@ interface UserInterface
     public function getUserAgent(): string;
     public function getTotalClicks(): int;
     public function getTotalViews(): int;
-    public function sourceType(): int;
-    public function sourceUrl(): int;
+    public function sourceType(): string;
+    public function sourceUrl(): string;
 }
