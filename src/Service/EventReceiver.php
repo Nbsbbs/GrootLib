@@ -21,11 +21,6 @@ class EventReceiver implements LoggerAwareInterface
     private $eventBuffer;
 
     /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
-    /**
      * EventReceiver constructor.
      *
      * @param EventBufferInterface $eventBuffer
