@@ -29,7 +29,6 @@ class EventReceiver implements LoggerAwareInterface
      * EventReceiver constructor.
      *
      * @param EventBufferInterface $eventBuffer
-     * @param LoggerInterface $logger
      */
     public function __construct(EventBufferInterface $eventBuffer)
     {
@@ -37,7 +36,11 @@ class EventReceiver implements LoggerAwareInterface
         $this->logger = new NullLogger();
     }
 
-    public function register(EventInterface $event)
+    /**
+     * @param EventInterface $event
+     *
+     */
+    public function register(EventInterface $event): void
     {
         if ($event->isValid()) {
             $this->eventBuffer->buffer($event);

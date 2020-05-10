@@ -9,5 +9,9 @@ use Noobus\GrootLib\Entity\EventInterface;
 interface EventBufferInterface
 {
     public function buffer(EventInterface $event);
-    public function get(): ?EventInterface;
+
+    /**
+     * @return \Generator|EventInterface[]
+     */
+    public function subscribe(): \Generator;
 }
