@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Noobus\GrootLib\Entity\Event;
 
-use http\Client\Curl\User;
 use Noobus\GrootLib\Entity\EventInterface;
 use Noobus\GrootLib\Entity\Item\ThumbItem;
 use Noobus\GrootLib\Entity\ItemInterface;
@@ -14,7 +13,7 @@ use Noobus\GrootLib\Entity\ZoneInterface;
 
 class ThumbEvent implements EventInterface
 {
-    protected const VALID_ZONES = [
+    protected const VALID_ZONE_TYPES = [
         CategoryZone::class,
     ];
 
@@ -48,6 +47,16 @@ class ThumbEvent implements EventInterface
      */
     private $timestamp;
 
+    /**
+     * ThumbEvent constructor.
+     *
+     * @param ThumbItem $thumb
+     * @param ZoneInterface $zone
+     * @param UserInterface $user
+     * @param string $type
+     * @param string $zonePlaceId
+     * @param \DateTimeImmutable $timestamp
+     */
     public function __construct(
         ThumbItem $thumb,
         ZoneInterface $zone,
@@ -56,6 +65,8 @@ class ThumbEvent implements EventInterface
         string $zonePlaceId,
         \DateTimeImmutable $timestamp
     ) {
+        $this->validateZoneType($zone);
+
         $this->thumb = $thumb;
         $this->zone = $zone;
         $this->user = $user;
@@ -69,6 +80,17 @@ class ThumbEvent implements EventInterface
             $this->zonePlaceId = $zonePlaceId;
         } else {
             throw new \InvalidArgumentException('Invalid zone place id "' . $zonePlaceId . '"');
+        }
+    }
+
+    /**
+     * @param ZoneInterface $zone
+     */
+    protected function validateZoneType(ZoneInterface $zone): void
+    {
+        $class = get_class($zone);
+        if (!in_array($class, self::VALID_ZONE_TYPES)) {
+            throw new \InvalidArgumentException('Zone type not supported');
         }
     }
 
