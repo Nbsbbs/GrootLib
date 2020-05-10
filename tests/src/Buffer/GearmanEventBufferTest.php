@@ -8,7 +8,7 @@ use Noobus\GrootLib\Entity\Event\EventType;
 use Noobus\GrootLib\Entity\Event\ThumbEvent;
 use Noobus\GrootLib\Entity\EventInterface;
 use Noobus\GrootLib\Entity\Item\ThumbItem;
-use Noobus\GrootLib\Entity\User\User;
+use Noobus\GrootLib\Entity\User\PresetUser;
 use Noobus\GrootLib\Entity\Zone\CategoryZone;
 use PHPUnit\Framework\TestCase;
 
@@ -28,7 +28,7 @@ class GearmanEventBufferTest extends TestCase
 
         $thumb = new ThumbItem(1, 2);
         $zone = new CategoryZone('masturdoor.com', 125);
-        $user = new User();
+        $user = new PresetUser();
 
         $event = new ThumbEvent(
             $thumb,

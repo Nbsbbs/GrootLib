@@ -8,7 +8,7 @@ use Noobus\GrootLib\Entity\Event\EventType;
 use Noobus\GrootLib\Entity\Event\ThumbEvent;
 use Noobus\GrootLib\Entity\Item\ThumbItem;
 use Noobus\GrootLib\Entity\User\SimpleSessionUser;
-use Noobus\GrootLib\Entity\User\User;
+use Noobus\GrootLib\Entity\User\PresetUser;
 use Noobus\GrootLib\Entity\Zone\CategoryZone;
 use Noobus\GrootLib\Storage\Clickhouse\ClientFactory;
 use Noobus\GrootLib\Storage\ClickhouseStorage;

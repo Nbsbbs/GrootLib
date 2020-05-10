@@ -7,7 +7,7 @@ use Noobus\GrootLib\Entity\Config\GearmanConfig;
 use Noobus\GrootLib\Entity\Event\EventType;
 use Noobus\GrootLib\Entity\Event\ThumbEvent;
 use Noobus\GrootLib\Entity\Item\ThumbItem;
-use Noobus\GrootLib\Entity\User\User;
+use Noobus\GrootLib\Entity\User\PresetUser;
 use Noobus\GrootLib\Entity\Zone\CategoryZone;
 use Noobus\GrootLib\Storage\Clickhouse\ClientFactory;
 use Noobus\GrootLib\Storage\ClickhouseStorage;
@@ -20,7 +20,7 @@ $buffer = new GearmanEventBuffer($cf);
 
 $thumb = new ThumbItem(1, 2);
 $zone = new CategoryZone('masturdoor.com', 125);
-$user = new User();
+$user = new PresetUser();
 
 $event = new ThumbEvent(
     $thumb,

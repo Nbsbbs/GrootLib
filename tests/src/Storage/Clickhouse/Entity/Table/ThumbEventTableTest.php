@@ -5,7 +5,7 @@ namespace Noobus\GrootLib\Storage\Clickhouse\Entity\Table;
 use Noobus\GrootLib\Entity\Event\EventType;
 use Noobus\GrootLib\Entity\Event\ThumbEvent;
 use Noobus\GrootLib\Entity\Item\ThumbItem;
-use Noobus\GrootLib\Entity\User\User;
+use Noobus\GrootLib\Entity\User\PresetUser;
 use Noobus\GrootLib\Entity\Zone\CategoryZone;
 use PHPUnit\Framework\TestCase;
 
@@ -21,7 +21,7 @@ class ThumbEventTableTest extends TestCase
         $thumb = new ThumbItem(1, 1);
         $zone = new CategoryZone('masturdoor.com', 17, 'en', 'demybus');
 
-        $user = new User();
+        $user = new PresetUser();
         $type = EventType::TYPE_CLICK;
         $zonePlaceId = 1;
         $timestamp = new \DateTimeImmutable();
