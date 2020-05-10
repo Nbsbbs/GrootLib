@@ -13,6 +13,7 @@ interface EventBufferInterface
 
     /**
      * @param EventStorageInterface $eventStorage
+     * @param int $timeout
      */
-    public function subscribe(EventStorageInterface $eventStorage): void;
+    public function subscribe(EventStorageInterface $eventStorage, int $timeout = 600): void;
 }

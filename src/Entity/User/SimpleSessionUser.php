@@ -8,10 +8,25 @@ use Noobus\GrootLib\Entity\UserInterface;
 
 class SimpleSessionUser implements UserInterface
 {
-    private $ip4;
-    private $ip6;
-    private $sessionId;
-    private $userAgent;
+    /**
+     * @var mixed|string
+     */
+    private $ip4 = '';
+
+    /**
+     * @var string
+     */
+    private $ip6 = '';
+
+    /**
+     * @var string
+     */
+    private $sessionId = '';
+
+    /**
+     * @var mixed|string
+     */
+    private $userAgent = '';
 
     public function __construct()
     {
@@ -22,8 +37,8 @@ class SimpleSessionUser implements UserInterface
             $this->ip6 = '';
             $this->ip4 = $ip4;
         }
-        $this->userAgent = $_SERVER['HTTP_USER_AGENT'];
-        $this->sessionId = session_id();
+        $this->userAgent = $_SERVER['HTTP_USER_AGENT'] ?? '';
+        $this->sessionId = session_id() ?? '';
     }
 
     public function getIp4(): string

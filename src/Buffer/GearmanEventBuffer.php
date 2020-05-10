@@ -84,19 +84,21 @@ class GearmanEventBuffer implements EventBufferInterface, LoggerAwareInterface
 
     /**
      * @param EventStorageInterface $storage
+     * @param int $timeout
      */
-    public function subscribe(EventStorageInterface $storage): void
+    public function subscribe(EventStorageInterface $storage, int $timeout = 600): void
     {
+        $startTime = time();
         $this->getWorker()->addFunction(
             $this->getBufferQueue(),
             function (\GearmanJob $job, EventStorageInterface $storage) {
                 $data = $job->workload();
-                var_dump($data);
+                $this->logger->debug('Serialized event: '.$data);
                 if ($data = unserialize($data)) {
                     if ($data instanceof EventInterface) {
                         $storage->save($data);
                     } else {
-                        // var_dump($data);
+                        $this->logger->warning(sprintf('Unsupported event type %s received', get_class($data)));
                     }
                 }
             },
@@ -107,6 +109,11 @@ class GearmanEventBuffer implements EventBufferInterface, LoggerAwareInterface
             if ($this->getWorker()->returnCode() != GEARMAN_SUCCESS) {
                 $this->logger->error('Return code ' . $this->getWorker()->returnCode() . ' from gearman');
                 break;
+            }
+
+            $runningTime = time() - $startTime;
+            if ($runningTime > $timeout) {
+                return;
             }
         }
     }
