@@ -17,7 +17,7 @@ class GearmanConfig
     private $host;
 
     /**
-     * @var string
+     * @var int
      */
     private $port;
 
@@ -33,7 +33,7 @@ class GearmanConfig
      * @param string $port
      * @param string $prefix
      */
-    public function __construct(string $host, string $port, string $prefix)
+    public function __construct(string $host, int $port, string $prefix)
     {
         $this->host = $host;
         $this->port = $port;
@@ -49,9 +49,9 @@ class GearmanConfig
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getPort(): string
+    public function getPort(): int
     {
         return $this->port;
     }

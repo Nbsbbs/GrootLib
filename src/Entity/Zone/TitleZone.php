@@ -25,9 +25,9 @@ class TitleZone extends AbstractZone implements ZoneInterface
      *
      * @param string $domain
      * @param string $language
-     * @param string|null $group
+     * @param string $group
      */
-    public function __construct(string $domain, string $language = 'en', string $group = null)
+    public function __construct(string $domain, string $language = 'en', string $group = '')
     {
         $this->domain = $domain;
         $this->language = $language;

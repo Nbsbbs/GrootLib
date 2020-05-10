@@ -52,7 +52,11 @@ class UserIp4Field implements FieldInterface
      */
     public function value()
     {
-        return $this->ip;
+        if (!empty($this->ip)) {
+            return $this->ip;
+        } else {
+            return '0.0.0.0';
+        }
     }
 
     /**

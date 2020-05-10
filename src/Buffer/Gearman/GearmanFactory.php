@@ -11,7 +11,7 @@ use Noobus\GrootLib\Entity\Config\GearmanConfig;
  *
  * @package Noobus\GrootLib\Buffer\Gearman
  */
-class GearmanClientFactory
+class GearmanFactory
 {
     /**
      * @var GearmanConfig
@@ -34,6 +34,20 @@ class GearmanClientFactory
     public function getClient(): \GearmanClient
     {
         $client = new \GearmanClient();
+        $client->addServer(
+            $this->config->getHost(),
+            $this->config->getPort()
+        );
+
+        return $client;
+    }
+
+    /**
+     * @return \GearmanWorker
+     */
+    public function getWorker(): \GearmanWorker
+    {
+        $client = new \GearmanWorker();
         $client->addServer(
             $this->config->getHost(),
             $this->config->getPort()

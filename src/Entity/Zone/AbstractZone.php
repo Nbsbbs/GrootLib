@@ -12,7 +12,7 @@ abstract class AbstractZone implements \Serializable
     protected $domain;
 
     /**
-     * @var string|null
+     * @var string
      */
     protected $group = '';
 

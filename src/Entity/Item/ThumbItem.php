@@ -79,8 +79,8 @@ class ThumbItem implements ItemInterface
             throw new \InvalidArgumentException('Invalid value '.$serialized.' for field "id"');
         }
         $unserialized = unserialize($serialized);
-        $this->id = $serialized['id'];
-        $this->galleryId = $serialized['galleryId'];
+        $this->id = $unserialized['id'];
+        $this->galleryId = $unserialized['galleryId'];
     }
 
     /**

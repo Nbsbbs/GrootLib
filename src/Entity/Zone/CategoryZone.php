@@ -38,7 +38,7 @@ class CategoryZone extends AbstractZone implements ZoneInterface
         string $domain,
         int $categoryId = 0,
         string $language = 'en',
-        string $group = null
+        string $group = ''
     ) {
         $this->domain = $domain;
         $this->categoryId = $categoryId;
