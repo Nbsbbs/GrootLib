@@ -4,14 +4,20 @@ declare(strict_types=1);
 
 namespace Noobus\GrootLib\Entity\Event;
 
+use http\Client\Curl\User;
 use Noobus\GrootLib\Entity\EventInterface;
 use Noobus\GrootLib\Entity\Item\ThumbItem;
 use Noobus\GrootLib\Entity\ItemInterface;
 use Noobus\GrootLib\Entity\UserInterface;
+use Noobus\GrootLib\Entity\Zone\CategoryZone;
 use Noobus\GrootLib\Entity\ZoneInterface;
 
 class ThumbEvent implements EventInterface
 {
+    protected const VALID_ZONES = [
+        CategoryZone::class,
+    ];
+
     /**
      * @var ThumbItem
      */
@@ -126,6 +132,16 @@ class ThumbEvent implements EventInterface
     public function getTimestamp(): \DateTimeImmutable
     {
         return $this->timestamp;
+    }
+
+    public function getZonePlaceId(): string
+    {
+        return $this->zonePlaceId;
+    }
+
+    public function getUser(): UserInterface
+    {
+        return $this->user;
     }
 
     public function getAttributes(): array

@@ -24,9 +24,9 @@ class UserIp4Field implements FieldInterface
     /**
      * EventTypeField constructor.
      *
-     * @param string $type
+     * @param string|null $ip
      */
-    public function __construct(string $ip)
+    public function __construct(?string $ip = null)
     {
         $this->ip = $ip;
     }
@@ -36,6 +36,10 @@ class UserIp4Field implements FieldInterface
      */
     public function isValid()
     {
+        if (is_null($this->ip)) {
+            return true;
+        }
+
         if (filter_var($this->ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
             return true;
         } else {
@@ -64,6 +68,6 @@ class UserIp4Field implements FieldInterface
      */
     public static function toSql(): string
     {
-        return sprintf('`%s` IPv4', static::name());
+        return sprintf('`%s` Nullable(IPv4)', static::name());
     }
 }

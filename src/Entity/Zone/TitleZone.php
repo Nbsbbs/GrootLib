@@ -33,4 +33,19 @@ class TitleZone extends AbstractZone implements ZoneInterface
         $this->language = $language;
         $this->group = $group;
     }
+
+    public function getCategoryId(): ?int
+    {
+        return 0;
+    }
+
+    public function getSearchKeyword(): string
+    {
+        return '';
+    }
+
+    public function getEmbedId(): int
+    {
+        return 0;
+    }
 }

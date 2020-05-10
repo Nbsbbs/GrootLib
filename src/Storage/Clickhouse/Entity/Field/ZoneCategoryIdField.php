@@ -13,14 +13,14 @@ class ZoneCategoryIdField implements FieldInterface
      */
     private $id;
 
-    public function __construct(string $id)
+    public function __construct(int $id = 0)
     {
-        $this->id = intval($id);
+        $this->id = $id;
     }
 
     public function isValid()
     {
-        return $this->id > 0;
+        return $this->id >= 0;
     }
 
     public function value()

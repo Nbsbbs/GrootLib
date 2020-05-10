@@ -12,6 +12,8 @@ use Noobus\GrootLib\Entity\Event\EventType;
 use Noobus\GrootLib\Storage\Clickhouse\ClientFactory;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\AbstractJsonRow;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\RowInterface;
+use Noobus\GrootLib\Storage\Clickhouse\Entity\Table\ThumbEventTable;
+use Noobus\GrootLib\Storage\Clickhouse\Entity\TableInterface;
 
 class ClickhouseStorage implements EventStorageInterface
 {
@@ -27,22 +29,27 @@ class ClickhouseStorage implements EventStorageInterface
      */
     public function save(EventInterface $event)
     {
-        $tableName = $this->getTableName($event);
-        $rowStructure = $this->getRowObject($event);
-        foreach ($event->getMetrics() as $metric => $value) {
-            $rowStructure->set($metric, $value);
-        }
+        $client = $this->clientFactory->getClient();
+        $table = $this->getTableObject($event);
+        $row = $table->createRow($event);
+        $client->insert(
+            $table::getName(),
+            [
+                array_values($row),
+            ],
+            array_keys($row)
+        );
     }
 
     /**
      * @param EventInterface $event
-     * @return string
+     * @return TableInterface
      */
-    protected function getTableName(EventInterface $event): string
+    protected function getTableObject(EventInterface $event): TableInterface
     {
         $this->validateEvent($event);
         if ($event instanceof ThumbEvent) {
-            return 'stat_thumb';
+            return new ThumbEventTable();
         }
 
         throw new \InvalidArgumentException('Unknown event type "' . get_class($event) . '"');

@@ -36,7 +36,7 @@ class CategoryZone extends AbstractZone implements ZoneInterface
      */
     public function __construct(
         string $domain,
-        int $categoryId,
+        int $categoryId = 0,
         string $language = 'en',
         string $group = null
     ) {
@@ -47,15 +47,23 @@ class CategoryZone extends AbstractZone implements ZoneInterface
     }
 
     /**
+     * @return int
+     */
+    public function getCategoryId(): ?int
+    {
+        return $this->categoryId;
+    }
+
+    /**
      * @inheritDoc
      */
     public function serialize()
     {
         return serialize([
-            'domain' => $this->domain,
-            'group' => $this->group,
-            'categoryId' => $this->categoryId,
-            'lang' => $this->language,
+            'd' => $this->domain,
+            'g' => $this->group,
+            'c' => $this->categoryId,
+            'l' => $this->language,
         ]);
     }
 
@@ -65,9 +73,22 @@ class CategoryZone extends AbstractZone implements ZoneInterface
     public function unserialize($serialized)
     {
         $data = unserialize($serialized);
-        $this->domain = $data['domain'];
-        $this->categoryId = $data['categoryId'];
-        $this->group = $data['group'] ?? null;
-        $this->language = $data['lang'] ?? 'en';
+        $this->domain = $data['d'];
+        $this->categoryId = $data['c'];
+        $this->group = $data['g'] ?? null;
+        $this->language = $data['l'] ?? 'en';
+    }
+
+    public function getSearchKeyword(): string
+    {
+        return '';
+    }
+
+    /**
+     * @return int
+     */
+    public function getEmbedId(): int
+    {
+        return 0;
     }
 }

@@ -14,7 +14,7 @@ abstract class AbstractZone implements \Serializable
     /**
      * @var string|null
      */
-    protected $group = null;
+    protected $group = '';
 
     /**
      * @var string
@@ -54,7 +54,7 @@ abstract class AbstractZone implements \Serializable
     /**
      * @return string|null
      */
-    public function getGroup(): ?string
+    public function getGroup(): string
     {
         return $this->group;
     }

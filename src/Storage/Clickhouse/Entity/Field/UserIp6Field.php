@@ -24,9 +24,9 @@ class UserIp6Field implements FieldInterface
     /**
      * EventTypeField constructor.
      *
-     * @param string $ip
+     * @param string|null $ip
      */
-    public function __construct(string $ip)
+    public function __construct(?string $ip = null)
     {
         $this->ip = $ip;
     }
@@ -36,6 +36,10 @@ class UserIp6Field implements FieldInterface
      */
     public function isValid()
     {
+        if (is_null($this->id)) {
+            return true;
+        }
+
         if (filter_var($this->ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
             return true;
         } else {
@@ -64,6 +68,6 @@ class UserIp6Field implements FieldInterface
      */
     public static function toSql(): string
     {
-        return sprintf('`%s` IPv6', static::name());
+        return sprintf('`%s` Nullable(IPv6)', static::name());
     }
 }

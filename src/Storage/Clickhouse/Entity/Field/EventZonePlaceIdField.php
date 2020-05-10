@@ -11,16 +11,16 @@ class EventZonePlaceIdField implements FieldInterface
     /**
      * @var int
      */
-    private $id;
+    private $id = 0;
 
-    public function __construct(string $id)
+    public function __construct(string $id = '0')
     {
         $this->id = intval($id);
     }
 
     public function isValid()
     {
-        return $this->id > 0;
+        return is_numeric($this->id);
     }
 
     public function value()

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Noobus\GrootLib\Storage\Clickhouse\Entity\Table;
 
+use Noobus\GrootLib\Entity\Event\ThumbEvent;
+use Noobus\GrootLib\Entity\EventInterface;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\DateTimeField;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\EventTypeField;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\EventZonePlaceIdField;
@@ -20,8 +22,9 @@ use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\ZoneGroupField;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\ZoneLanguageField;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\ZoneSearchKeywordField;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\ZoneTypeField;
+use Noobus\GrootLib\Storage\Clickhouse\Entity\TableInterface;
 
-class ThumbEventTable
+class ThumbEventTable implements TableInterface
 {
     protected const NAME = 'stat_thumb_events';
     protected const FIELDS = [
@@ -54,11 +57,43 @@ class ThumbEventTable
         'sipHash64(UserSessionId)',
     ];
 
+    public function createRow(ThumbEvent $event): array
+    {
+        $row[DateTimeField::name()] = (new DateTimeField($event->getTimestamp()))->value();
+        $row[EventTypeField::name()] = (new EventTypeField($event->getType()))->value();
+        $row[EventZonePlaceIdField::name()] = (new EventZonePlaceIdField($event->getZonePlaceId()))->value();
+
+        $row[UserIp4Field::name()] = (new UserIp4Field($event->getUser()->getIp4()))->value();
+        $row[UserIp6Field::name()] = (new UserIp6Field($event->getUser()->getIp6()))->value();
+        $row[UserSessionIdField::name()] = (new UserSessionIdField($event->getUser()->getSessionId()))->value();
+        $row[UserUserAgentField::name()] = (new UserUserAgentField($event->getUser()->getUserAgent()))->value();
+
+        $row[ZoneTypeField::name()] = (new ZoneTypeField($event->getZone()->getType()))->value();
+        $row[ZoneCategoryIdField::name()] = (new ZoneCategoryIdField($event->getZone()->getCategoryId() ?? 0))->value();
+        $row[ZoneLanguageField::name()] = (new ZoneLanguageField($event->getZone()->getLanguage()))->value();
+        $row[ZoneDomainField::name()] = (new ZoneDomainField($event->getZone()->getDomain()))->value();
+        $row[ZoneSearchKeywordField::name()] = (new ZoneSearchKeywordField($event->getZone()
+                                                                                 ->getSearchKeyword()))->value();
+        $row[ZoneEmbedIdField::name()] = (new ZoneEmbedIdField($event->getZone()->getEmbedId()))->value();
+        $row[ZoneGroupField::name()] = (new ZoneGroupField($event->getZone()->getGroup()))->value();
+
+        $row[ItemThumbIdField::name()] = (new ItemThumbIdField($event->getItem()->getId()))->value();
+        $row[ItemGalleryIdField::name()] = (new ItemGalleryIdField($event->getItem()->getGalleryId()))->value();
+
+        return $row;
+    }
+
+    /**
+     * @return string
+     */
     public static function getName(): string
     {
         return self::NAME;
     }
 
+    /**
+     * @return string
+     */
     public static function getSqlCreate(): string
     {
         $text = sprintf(
@@ -73,7 +108,10 @@ class ThumbEventTable
         return $text;
     }
 
-    public static function getSqlFields(): string
+    /**
+     * @return string
+     */
+    protected static function getSqlFields(): string
     {
         $collection = [];
         foreach (self::FIELDS as $fieldClass) {
