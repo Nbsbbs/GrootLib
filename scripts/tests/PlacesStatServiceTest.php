@@ -3,6 +3,7 @@
 use Noobus\GrootLib\Entity\Config\ClickhouseConfig;
 use Noobus\GrootLib\Statistics\Clickhouse\Places\PlacesStatService;
 use Noobus\GrootLib\Statistics\Request\PlacesStatRequest;
+use Noobus\GrootLib\Statistics\Service\PlacesStatServiceFacade;
 use Noobus\GrootLib\Storage\Clickhouse\ClientFactory;
 
 require_once '../bootstrap.php';
@@ -10,7 +11,9 @@ require_once '../bootstrap.php';
 $config = new ClickhouseConfig('127.0.0.1', '8123', 'test');
 $clientFactory = new ClientFactory($config);
 
-$placesStatService = new PlacesStatService($clientFactory);
+$concretePlacesStatService = new PlacesStatService($clientFactory);
+
+$placesStatService = new PlacesStatServiceFacade($concretePlacesStatService);
 
 $request = (new PlacesStatRequest('noobus', 'tubemilfmom.xyz'))->withLimit(30)->withMinClicks(1)->withMaxClicks(8);
 

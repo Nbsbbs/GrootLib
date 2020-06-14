@@ -5,6 +5,7 @@ namespace Noobus\GrootLib\Statistics\Clickhouse\Places;
 use ClickHouseDB\Client;
 use Noobus\GrootLib\Statistics\Request\PlacesStatRequest;
 use Noobus\GrootLib\Statistics\Response\PlacesStatResponse;
+use Noobus\GrootLib\Statistics\Service\PlacesStatServiceInterface;
 use Noobus\GrootLib\Storage\Clickhouse\ClientFactory;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\DateTimeField;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\EventTypeField;
@@ -14,7 +15,7 @@ use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\ZoneDomainField;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\ZoneGroupField;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\Table\ThumbEventTable;
 
-class PlacesStatService
+class PlacesStatService implements PlacesStatServiceInterface
 {
     /**
      * @var Client
