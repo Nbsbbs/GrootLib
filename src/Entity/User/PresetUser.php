@@ -114,7 +114,7 @@ class PresetUser implements UserInterface
      */
     public function getUserAgent(): string
     {
-        return $this->sessionId;
+        return $this->userAgent;
     }
 
     /**

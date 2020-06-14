@@ -96,7 +96,11 @@ class GearmanEventBuffer implements EventBufferInterface, LoggerAwareInterface
                 $this->logger->debug('Serialized event: '.$data);
                 if ($data = unserialize($data)) {
                     if ($data instanceof EventInterface) {
-                        $storage->save($data);
+                        try {
+                            $storage->save($data);
+                        } catch (\TypeError $error) {
+                            $this->logger->error($error->getMessage());
+                        }
                     } else {
                         $this->logger->warning(sprintf('Unsupported event type %s received', get_class($data)));
                     }

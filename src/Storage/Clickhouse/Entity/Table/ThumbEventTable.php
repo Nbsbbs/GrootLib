@@ -11,6 +11,7 @@ use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\EventTypeField;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\EventZonePlaceIdField;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\ItemGalleryIdField;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\ItemThumbIdField;
+use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\UserClickNumberField;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\UserIp4Field;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\UserIp6Field;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\UserSessionIdField;
@@ -41,6 +42,7 @@ class ThumbEventTable implements TableInterface
         UserUserAgentField::class,
         UserSourceTypeField::class,
         UserSourceUrlField::class,
+        UserClickNumberField::class,
         //
         ZoneTypeField::class,
         ZoneCategoryIdField::class,
@@ -73,6 +75,7 @@ class ThumbEventTable implements TableInterface
         $row[UserUserAgentField::name()] = (new UserUserAgentField($event->getUser()->getUserAgent()))->value();
         $row[UserSourceTypeField::name()] = (new UserSourceTypeField($event->getUser()->sourceType()))->value();
         $row[UserSourceUrlField::name()] = (new UserSourceUrlField($event->getUser()->sourceUrl()))->value();
+        $row[UserClickNumberField::name()] = (new UserClickNumberField((string) $event->getUser()->getTotalClicks()))->value();
 
         $row[ZoneTypeField::name()] = (new ZoneTypeField($event->getZone()->getType()))->value();
         $row[ZoneCategoryIdField::name()] = (new ZoneCategoryIdField($event->getZone()->getCategoryId() ?? 0))->value();

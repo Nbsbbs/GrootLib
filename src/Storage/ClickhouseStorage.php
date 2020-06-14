@@ -10,7 +10,6 @@ use Noobus\GrootLib\Entity\EventInterface;
 use Noobus\GrootLib\Entity\Item\ItemType;
 use Noobus\GrootLib\Entity\Event\EventType;
 use Noobus\GrootLib\Storage\Clickhouse\ClientFactory;
-use Noobus\GrootLib\Storage\Clickhouse\Entity\AbstractJsonRow;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\RowInterface;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\Table\ThumbEventTable;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\TableInterface;

@@ -26,6 +26,7 @@ class EventTypeField implements FieldInterface
         2 => EventType::TYPE_CLICK,
         3 => EventType::TYPE_BOUNCE,
         4 => EventType::TYPE_COMPLAINT,
+        5 => EventType::TYPE_FLASH,
     ];
     /**
      *

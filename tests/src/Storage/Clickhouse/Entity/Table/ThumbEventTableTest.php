@@ -21,7 +21,16 @@ class ThumbEventTableTest extends TestCase
         $thumb = new ThumbItem(1, 1);
         $zone = new CategoryZone('masturdoor.com', 17, 'en', 'demybus');
 
-        $user = new PresetUser();
+        $user = new PresetUser(
+            '192.232.127.27',
+            '',
+            'dfgdfgdfgdfgg',
+            'FGdf dfgdfg dfg dfg ',
+            6,
+            0,
+            'trade',
+            'http://example.org'
+        );
         $type = EventType::TYPE_CLICK;
         $zonePlaceId = 1;
         $timestamp = new \DateTimeImmutable();
