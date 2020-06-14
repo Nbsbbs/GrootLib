@@ -30,6 +30,7 @@ use Noobus\GrootLib\Storage\Clickhouse\Entity\TableInterface;
 class ThumbEventTable implements TableInterface
 {
     protected const NAME = 'stat_thumb_events';
+    protected const BUFFER_NAME = 'stat_thumb_events_buffer';
     protected const FIELDS = [
         DateTimeField::class,
         EventTypeField::class,
@@ -75,7 +76,8 @@ class ThumbEventTable implements TableInterface
         $row[UserUserAgentField::name()] = (new UserUserAgentField($event->getUser()->getUserAgent()))->value();
         $row[UserSourceTypeField::name()] = (new UserSourceTypeField($event->getUser()->sourceType()))->value();
         $row[UserSourceUrlField::name()] = (new UserSourceUrlField($event->getUser()->sourceUrl()))->value();
-        $row[UserClickNumberField::name()] = (new UserClickNumberField((string) $event->getUser()->getTotalClicks()))->value();
+        $row[UserClickNumberField::name()] = (new UserClickNumberField((string) $event->getUser()
+                                                                                      ->getTotalClicks()))->value();
 
         $row[ZoneTypeField::name()] = (new ZoneTypeField($event->getZone()->getType()))->value();
         $row[ZoneCategoryIdField::name()] = (new ZoneCategoryIdField($event->getZone()->getCategoryId() ?? 0))->value();
@@ -98,6 +100,14 @@ class ThumbEventTable implements TableInterface
     public static function getName(): string
     {
         return self::NAME;
+    }
+
+    /**
+     * @return string
+     */
+    public static function getBufferName(): string
+    {
+        return self::BUFFER_NAME;
     }
 
     /**

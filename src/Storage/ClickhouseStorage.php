@@ -32,7 +32,7 @@ class ClickhouseStorage implements EventStorageInterface
         $table = $this->getTableObject($event);
         $row = $table->createRow($event);
         $client->insert(
-            $table::getName(),
+            $table::getBufferName(),
             [
                 array_values($row),
             ],
