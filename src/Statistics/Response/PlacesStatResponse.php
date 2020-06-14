@@ -11,9 +11,25 @@ class PlacesStatResponse
      */
     private $places = [];
 
+    /**
+     * @var bool
+     */
+    private $isSorted = false;
+
     public function pushPlace(PlacementStat $placementStat) {
         $this->places[$placementStat->getId()] = $placementStat;
-        ksort($this->places, SORT_NATURAL);
+        $this->isSorted = false;
+    }
+
+    /**
+     *
+     */
+    public function sortPlaces(): void
+    {
+        if (!$this->isSorted) {
+            ksort($this->places, SORT_NATURAL);
+            $this->isSorted = true;
+        }
     }
 
     /**
@@ -29,6 +45,7 @@ class PlacesStatResponse
      */
     public function walkItems(): \Generator
     {
+        $this->sortPlaces();
         yield from $this->places;
     }
 }
