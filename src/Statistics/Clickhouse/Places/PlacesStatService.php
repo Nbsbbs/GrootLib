@@ -32,9 +32,12 @@ class PlacesStatService implements PlacesStatServiceInterface
         $requstSql = $this->createSqlQuery();
         $requestData = $this->createSqlRequstData($request);
 
+        $startTime = microtime(true);
         $result = $this->client->select($requstSql, $requestData);
+        $endTime = microtime(true);
 
         $response = new PlacesStatResponse();
+        $response->setElapsedTime($endTime - $startTime);
 
         foreach ($result->rows() as $row) {
             $placementStat = new PlacementStat($row['PlaceId'], $row['Clicks'], $row['Views'], $row['Ctr']);

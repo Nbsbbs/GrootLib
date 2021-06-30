@@ -9,16 +9,40 @@ class PlacesStatResponse
     /**
      * @var array
      */
-    private $places = [];
+    private array $places = [];
 
     /**
      * @var bool
      */
-    private $isSorted = false;
+    private bool $isSorted = false;
 
-    public function pushPlace(PlacementStat $placementStat) {
+    /**
+     * @var float|null
+     */
+    private ?float $elapsedTime = null;
+
+    public function pushPlace(PlacementStat $placementStat)
+    {
         $this->places[$placementStat->getId()] = $placementStat;
         $this->isSorted = false;
+    }
+
+    /**
+     * @param float $time
+     * @return $this
+     */
+    public function setElapsedTime(float $time): self
+    {
+        $this->elapsedTime = $time;
+        return $this;
+    }
+
+    /**
+     * @return float|null
+     */
+    public function getElapsedTime(): ?float
+    {
+        return $this->elapsedTime;
     }
 
     /**
