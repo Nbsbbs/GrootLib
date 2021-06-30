@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Noobus\GrootLib\Service;
 
-use Noobus\GrootLib\Entity\EventInterface;
 use Noobus\GrootLib\Buffer\EventBufferInterface;
+use Noobus\GrootLib\Entity\EventInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
-use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
 class EventReceiver implements LoggerAwareInterface

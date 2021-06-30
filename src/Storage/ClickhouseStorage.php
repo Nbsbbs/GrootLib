@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace Noobus\GrootLib\Storage;
 
-use Noobus\GrootLib\Buffer\EventBufferInterface;
+use Noobus\GrootLib\Entity\Event\EventType;
 use Noobus\GrootLib\Entity\Event\ThumbEvent;
 use Noobus\GrootLib\Entity\EventInterface;
 use Noobus\GrootLib\Entity\Item\ItemType;
-use Noobus\GrootLib\Entity\Event\EventType;
 use Noobus\GrootLib\Storage\Clickhouse\ClientFactory;
-use Noobus\GrootLib\Storage\Clickhouse\Entity\RowInterface;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\Table\ThumbEventTable;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\TableInterface;
 
@@ -66,14 +64,5 @@ class ClickhouseStorage implements EventStorageInterface
         if (!ItemType::isValidType($event->getItem()->getType())) {
             throw new \InvalidArgumentException('Invalid item type "' . $event->getType() . '"');
         }
-    }
-
-    /**
-     * @param EventInterface $event
-     * @return RowInterface
-     */
-    protected function getRowObject(EventInterface $event): RowInterface
-    {
-        $this->validateEvent($event);
     }
 }
