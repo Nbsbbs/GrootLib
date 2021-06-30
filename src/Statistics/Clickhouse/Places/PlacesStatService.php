@@ -64,6 +64,7 @@ class PlacesStatService implements PlacesStatServiceInterface
                                 select %s 
                                 from %s 
                                 WHERE %s=\'click\' 
+                                    AND %s>today()-:days_interval
                                 GROUP BY %s 
                                 HAVING 
                                        count()>=:min_clicks 
@@ -82,6 +83,7 @@ class PlacesStatService implements PlacesStatServiceInterface
             UserSessionIdField::name(),
             ThumbEventTable::getName(),
             EventTypeField::name(),
+            DateTimeField::name(),
             UserSessionIdField::name(),
         );
 
