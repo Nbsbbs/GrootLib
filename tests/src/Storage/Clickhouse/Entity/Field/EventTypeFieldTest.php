@@ -10,7 +10,7 @@ class EventTypeFieldTest extends TestCase
     public function testToSql()
     {
         $field = new EventTypeField(EventType::TYPE_CLICK);
-        $expected = "`EventType` Enum('view' = 1, 'click' = 2, 'bounce' = 3, 'complaint' = 4)";
+        $expected = "`EventType` Enum('view' = 1, 'click' = 2, 'bounce' = 3, 'complaint' = 4, 'flash' = 5)";
         $this->assertEquals($expected, $field->toSql());
     }
 }
