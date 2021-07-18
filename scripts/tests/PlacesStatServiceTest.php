@@ -1,7 +1,7 @@
 <?php
 
 use Noobus\GrootLib\Entity\Config\ClickhouseConfig;
-use Noobus\GrootLib\Statistics\Clickhouse\Places\PlacesStatService;
+use Noobus\GrootLib\Statistics\Clickhouse\Places\ThumbEventPlacesStatService;
 use Noobus\GrootLib\Statistics\Request\PlacesStatRequest;
 use Noobus\GrootLib\Statistics\Service\PlacesStatServiceFacade;
 use Noobus\GrootLib\Storage\Clickhouse\ClientFactory;
@@ -11,7 +11,7 @@ require_once '../bootstrap.php';
 $config = new ClickhouseConfig('127.0.0.1', '8123', 'test');
 $clientFactory = new ClientFactory($config);
 
-$concretePlacesStatService = new PlacesStatService($clientFactory);
+$concretePlacesStatService = new ThumbEventPlacesStatService($clientFactory);
 
 $placesStatService = new PlacesStatServiceFacade($concretePlacesStatService);
 

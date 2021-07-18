@@ -11,6 +11,7 @@ use Noobus\GrootLib\Entity\UserInterface;
 use Noobus\GrootLib\Entity\Zone\CategoryZone;
 use Noobus\GrootLib\Entity\Zone\FixedSearchQueryZone;
 use Noobus\GrootLib\Entity\Zone\FixedTopQueryZone;
+use Noobus\GrootLib\Entity\Zone\SearchQueryZone;
 use Noobus\GrootLib\Entity\Zone\TitleZone;
 use Noobus\GrootLib\Entity\ZoneInterface;
 
@@ -20,7 +21,8 @@ class RotationEvent implements EventInterface
         CategoryZone::class,
         TitleZone::class,
         FixedSearchQueryZone::class,
-        FixedTopQueryZone::class
+        FixedTopQueryZone::class,
+        SearchQueryZone::class,
     ];
 
     /**
@@ -28,8 +30,14 @@ class RotationEvent implements EventInterface
      */
     private ThumbItem $thumb;
 
+    /**
+     * @var string
+     */
     private string $rotationId;
 
+    /**
+     * @var ZoneInterface
+     */
     private ZoneInterface $zone;
 
     /**
@@ -168,7 +176,7 @@ class RotationEvent implements EventInterface
 
     public function getRotationId(): string
     {
-        return $this->getRotationId();
+        return $this->rotationId;
     }
 
     public function getUser(): UserInterface

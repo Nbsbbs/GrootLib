@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace Noobus\GrootLib\Storage;
 
 use Noobus\GrootLib\Entity\Event\EventType;
+use Noobus\GrootLib\Entity\Event\RotationEvent;
 use Noobus\GrootLib\Entity\Event\ThumbEvent;
 use Noobus\GrootLib\Entity\EventInterface;
 use Noobus\GrootLib\Entity\Item\ItemType;
 use Noobus\GrootLib\Storage\Clickhouse\ClientFactory;
+use Noobus\GrootLib\Storage\Clickhouse\Entity\Table\RotationEventTable;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\Table\ThumbEventTable;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\TableInterface;
 
@@ -37,6 +39,15 @@ class ClickhouseStorage implements EventStorageInterface
                 ],
                 array_keys($row)
             );
+        } elseif (($event instanceof RotationEvent) and ($table instanceof RotationEventTable)) {
+            $row = $table->createRow($event);
+            $client->insert(
+                $table::getBufferName(),
+                [
+                    array_values($row),
+                ],
+                array_keys($row)
+            );
         } else {
             throw new \InvalidArgumentException('event must be instance of ThumbEvent to be processed by ThumbEventTable');
         }
@@ -51,6 +62,8 @@ class ClickhouseStorage implements EventStorageInterface
         $this->validateEvent($event);
         if ($event instanceof ThumbEvent) {
             return new ThumbEventTable();
+        } elseif ($event instanceof RotationEvent) {
+            return new RotationEventTable();
         }
 
         throw new \InvalidArgumentException('Unknown event type "' . get_class($event) . '"');

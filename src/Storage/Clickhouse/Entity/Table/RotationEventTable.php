@@ -37,6 +37,7 @@ class RotationEventTable implements TableInterface
         EventTypeField::class,
         //
         EventZonePlaceIdField::class,
+        ItemRotationIdField::class,
         //
         UserIp4Field::class,
         UserIp6Field::class,
@@ -56,6 +57,7 @@ class RotationEventTable implements TableInterface
         //
         ItemThumbIdField::class,
         ItemGalleryIdField::class,
+
     ];
     protected const KEY_FIELDS = [
         'ZoneGroup',

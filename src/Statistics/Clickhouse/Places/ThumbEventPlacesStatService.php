@@ -15,7 +15,7 @@ use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\ZoneDomainField;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\ZoneGroupField;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\Table\ThumbEventTable;
 
-class PlacesStatService implements PlacesStatServiceInterface
+class ThumbEventPlacesStatService implements PlacesStatServiceInterface
 {
     /**
      * @var Client
