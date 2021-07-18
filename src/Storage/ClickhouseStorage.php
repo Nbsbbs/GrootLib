@@ -28,14 +28,18 @@ class ClickhouseStorage implements EventStorageInterface
     {
         $client = $this->clientFactory->getClient();
         $table = $this->getTableObject($event);
-        $row = $table->createRow($event);
-        $client->insert(
-            $table::getBufferName(),
-            [
-                array_values($row),
-            ],
-            array_keys($row)
-        );
+        if (($event instanceof ThumbEvent) and ($table instanceof ThumbEventTable)) {
+            $row = $table->createRow($event);
+            $client->insert(
+                $table::getBufferName(),
+                [
+                    array_values($row),
+                ],
+                array_keys($row)
+            );
+        } else {
+            throw new \InvalidArgumentException('event must be instance of ThumbEvent to be processed by ThumbEventTable');
+        }
     }
 
     /**
@@ -57,12 +61,12 @@ class ClickhouseStorage implements EventStorageInterface
      */
     protected function validateEvent(EventInterface $event)
     {
-        if (!EventType::isValidType($event->getType())) {
-            throw new \InvalidArgumentException('Invalid event type "' . $event->getType() . '"');
+        if (!EventType::isValidType($event->getEventType())) {
+            throw new \InvalidArgumentException('Invalid event type "' . $event->getEventType() . '"');
         }
 
         if (!ItemType::isValidType($event->getItem()->getType())) {
-            throw new \InvalidArgumentException('Invalid item type "' . $event->getType() . '"');
+            throw new \InvalidArgumentException('Invalid item type "' . $event->getEventType() . '"');
         }
     }
 }

@@ -9,77 +9,80 @@ use Noobus\GrootLib\Entity\Item\ThumbItem;
 use Noobus\GrootLib\Entity\ItemInterface;
 use Noobus\GrootLib\Entity\UserInterface;
 use Noobus\GrootLib\Entity\Zone\CategoryZone;
+use Noobus\GrootLib\Entity\Zone\TitleZone;
 use Noobus\GrootLib\Entity\ZoneInterface;
 
-class ThumbEvent implements EventInterface
+class RotationEvent implements EventInterface
 {
     protected const VALID_ZONE_TYPES = [
         CategoryZone::class,
+        TitleZone::class,
     ];
 
     /**
      * @var ThumbItem
      */
-    private $thumb;
+    private ThumbItem $thumb;
 
-    /**
-     * @var ZoneInterface
-     */
-    private $zone;
+    private string $rotationId;
+
+    private ZoneInterface $zone;
 
     /**
      * @var UserInterface
      */
-    private $user;
+    private UserInterface $user;
 
     /**
      * @var string
      */
-    private $type;
+    private string $type;
 
     /**
      * @var string
      */
-    private $zonePlaceId;
+    private string $pagePlaceId;
 
     /**
      * @var \DateTimeImmutable
      */
-    private $timestamp;
+    private \DateTimeImmutable $timestamp;
 
     /**
      * ThumbEvent constructor.
      *
+     * @param string $eventType
+     * @param string $rotationId
+     * @param string $pagePlaceId
      * @param ThumbItem $thumb
-     * @param ZoneInterface $zone
      * @param UserInterface $user
-     * @param string $type
-     * @param string $zonePlaceId
      * @param \DateTimeImmutable $timestamp
      */
     public function __construct(
+        string $eventType,
+        string $rotationId,
+        string $pagePlaceId,
         ThumbItem $thumb,
-        ZoneInterface $zone,
         UserInterface $user,
-        string $type,
-        string $zonePlaceId,
+        ZoneInterface $zone,
         \DateTimeImmutable $timestamp
     ) {
-        $this->validateZoneType($zone);
-
         $this->thumb = $thumb;
-        $this->zone = $zone;
         $this->user = $user;
+        $this->rotationId = $rotationId;
         $this->timestamp = $timestamp;
-        if (EventType::isValidType($type)) {
-            $this->type = $type;
+        $this->validateZoneType($zone);
+        $this->zone = $zone;
+
+        if (EventType::isValidType($eventType)) {
+            $this->type = $eventType;
         } else {
-            throw new \InvalidArgumentException('Invalid type "' . $type . '"');
+            throw new \InvalidArgumentException('Invalid event type "' . $eventType . '"');
         }
-        if ($this->isValidPlaceId($zonePlaceId)) {
-            $this->zonePlaceId = $zonePlaceId;
+        if ($this->isValidPlaceId($pagePlaceId)) {
+            $this->pagePlaceId = $pagePlaceId;
         } else {
-            throw new \InvalidArgumentException('Invalid zone place id "' . $zonePlaceId . '"');
+            throw new \InvalidArgumentException('Invalid page place id "' . $pagePlaceId . '"');
         }
     }
 
@@ -100,11 +103,7 @@ class ThumbEvent implements EventInterface
      */
     protected function isValidPlaceId(string $place): bool
     {
-        if (!is_numeric($place)) {
-            return false;
-        } else {
-            return true;
-        }
+        return is_numeric($place);
     }
 
     /**
@@ -114,10 +113,11 @@ class ThumbEvent implements EventInterface
     {
         return serialize([
             'thumb' => $this->thumb,
-            'zone' => $this->zone,
             'user' => $this->user,
             'type' => $this->type,
-            'zonePlaceId' => $this->zonePlaceId,
+            'zone' => $this->zone,
+            'rotationId' => $this->rotationId,
+            'pagePlaceId' => $this->pagePlaceId,
             'timestamp' => $this->timestamp,
         ]);
     }
@@ -129,10 +129,11 @@ class ThumbEvent implements EventInterface
     {
         $data = unserialize($serialized);
         $this->thumb = $data['thumb'];
-        $this->zone = $data['zone'];
         $this->user = $data['user'];
         $this->type = $data['type'];
-        $this->zonePlaceId = $data['zonePlaceId'];
+        $this->zone = $data['zone'];
+        $this->rotationId = $data['rotationId'];
+        $this->pagePlaceId = $data['pagePlaceId'];
         $this->timestamp = $data['timestamp'];
     }
 
@@ -156,9 +157,14 @@ class ThumbEvent implements EventInterface
         return $this->timestamp;
     }
 
-    public function getZonePlaceId(): string
+    public function getPagePlaceId(): string
     {
-        return $this->zonePlaceId;
+        return $this->pagePlaceId;
+    }
+
+    public function getRotationId(): string
+    {
+        return $this->getRotationId();
     }
 
     public function getUser(): UserInterface

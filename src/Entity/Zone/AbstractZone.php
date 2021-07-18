@@ -9,22 +9,22 @@ abstract class AbstractZone implements \Serializable
     /**
      * @var string
      */
-    protected $domain;
+    protected string $domain;
 
     /**
      * @var string
      */
-    protected $group = '';
+    protected string $group = '';
 
     /**
      * @var string
      */
-    protected $type = ZoneType::TYPE_MIXED;
+    protected string $type = ZoneType::TYPE_MIXED;
 
     /**
      * @var string
      */
-    protected $language = 'en';
+    protected string $language = 'en';
 
 
     /**
@@ -94,7 +94,15 @@ abstract class AbstractZone implements \Serializable
     {
         $data = unserialize($serialized);
         $this->domain = $data['domain'];
-        $this->group = $data['group'] ?? null;
+        $this->group = $data['group'] ?? '';
         $this->language = $data['lang'] ?? 'en';
+    }
+
+    /**
+     * @return int
+     */
+    public function getFixedSearchId(): int
+    {
+        return 0;
     }
 }

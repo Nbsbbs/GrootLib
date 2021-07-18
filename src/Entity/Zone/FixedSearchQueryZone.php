@@ -12,36 +12,44 @@ use Noobus\GrootLib\Entity\Zone\ItemValidation\ZoneOfNumericItemsTrait;
  *
  * @package Noobus\GrootLib\Entity\Zone
  */
-class CategoryZone extends AbstractZone implements ZoneInterface
+class FixedSearchQueryZone extends AbstractZone implements ZoneInterface
 {
     use ZoneOfNumericItemsTrait;
 
     /**
      * @var string
      */
-    protected string $type = ZoneType::TYPE_CATEGORY;
+    protected string $type = ZoneType::TYPE_FIXED_SEARCH_QUERY;
 
     /**
      * @var int
      */
-    protected int $categoryId;
+    protected int $queryId;
+
+    /**
+     * @var string
+     */
+    protected string $fullTextQuery;
 
     /**
      * CategoryZone constructor.
      *
      * @param string $domain
-     * @param int $categoryId
+     * @param int $queryId
+     * @param string $fullTextQuery
      * @param string $language
      * @param string $group
      */
     public function __construct(
         string $domain,
-        int $categoryId = 0,
+        int $queryId,
+        string $fullTextQuery,
         string $language = 'en',
         string $group = ''
     ) {
         $this->domain = $domain;
-        $this->categoryId = $categoryId;
+        $this->queryId = $queryId;
+        $this->fullTextQuery = $fullTextQuery;
         $this->group = $group;
         $this->language = $language;
     }
@@ -51,7 +59,7 @@ class CategoryZone extends AbstractZone implements ZoneInterface
      */
     public function getCategoryId(): ?int
     {
-        return $this->categoryId;
+        return null;
     }
 
     /**
@@ -62,7 +70,8 @@ class CategoryZone extends AbstractZone implements ZoneInterface
         return serialize([
             'd' => $this->domain,
             'g' => $this->group,
-            'c' => $this->categoryId,
+            'qid' => $this->queryId,
+            'ftq' => $this->fullTextQuery,
             'l' => $this->language,
         ]);
     }
@@ -74,14 +83,15 @@ class CategoryZone extends AbstractZone implements ZoneInterface
     {
         $data = unserialize($serialized);
         $this->domain = $data['d'];
-        $this->categoryId = $data['c'];
-        $this->group = $data['g'] ?? null;
+        $this->queryId = $data['qid'];
+        $this->fullTextQuery = $data['ftq'];
+        $this->group = $data['g'] ?? '';
         $this->language = $data['l'] ?? 'en';
     }
 
     public function getSearchKeyword(): string
     {
-        return '';
+        return $this->fullTextQuery;
     }
 
     /**
@@ -90,5 +100,13 @@ class CategoryZone extends AbstractZone implements ZoneInterface
     public function getEmbedId(): int
     {
         return 0;
+    }
+
+    /**
+     * @return int
+     */
+    public function getFixedSearchId(): int
+    {
+        return $this->queryId;
     }
 }

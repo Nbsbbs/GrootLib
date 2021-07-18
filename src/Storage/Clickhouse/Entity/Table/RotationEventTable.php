@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace Noobus\GrootLib\Storage\Clickhouse\Entity\Table;
 
+use Noobus\GrootLib\Entity\Event\RotationEvent;
 use Noobus\GrootLib\Entity\Event\ThumbEvent;
-use Noobus\GrootLib\Entity\EventInterface;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\DateTimeField;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\EventTypeField;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\EventZonePlaceIdField;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\ItemGalleryIdField;
+use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\ItemRotationIdField;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\ItemThumbIdField;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\UserClickNumberField;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\UserIp4Field;
@@ -27,10 +28,10 @@ use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\ZoneSearchKeywordField;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\ZoneTypeField;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\TableInterface;
 
-class ThumbEventTable implements TableInterface
+class RotationEventTable implements TableInterface
 {
-    protected const NAME = 'stat_thumb_events';
-    protected const BUFFER_NAME = 'stat_thumb_events_buffer';
+    protected const NAME = 'stat_rotation_events';
+    protected const BUFFER_NAME = 'stat_rotation_events_buffer';
     protected const FIELDS = [
         DateTimeField::class,
         EventTypeField::class,
@@ -64,12 +65,12 @@ class ThumbEventTable implements TableInterface
         'sipHash64(UserSessionId)',
     ];
 
-    public function createRow(ThumbEvent $event): array
+    public function createRow(RotationEvent $event): array
     {
         $row[DateTimeField::name()] = (new DateTimeField($event->getTimestamp()))->value();
         $row[EventTypeField::name()] = (new EventTypeField($event->getEventType()))->value();
-        $row[EventZonePlaceIdField::name()] = (new EventZonePlaceIdField($event->getZonePlaceId()))->value();
-
+        $row[EventZonePlaceIdField::name()] = (new EventZonePlaceIdField($event->getPagePlaceId()))->value();
+        $row[ItemRotationIdField::name()] = (new ItemRotationIdField($event->getRotationId()))->value();
         $row[UserIp4Field::name()] = (new UserIp4Field($event->getUser()->getIp4()))->value();
         $row[UserIp6Field::name()] = (new UserIp6Field($event->getUser()->getIp6()))->value();
         $row[UserSessionIdField::name()] = (new UserSessionIdField($event->getUser()->getSessionId()))->value();
@@ -78,7 +79,6 @@ class ThumbEventTable implements TableInterface
         $row[UserSourceUrlField::name()] = (new UserSourceUrlField($event->getUser()->sourceUrl()))->value();
         $row[UserClickNumberField::name()] = (new UserClickNumberField((string) $event->getUser()
                                                                                       ->getTotalClicks()))->value();
-
         $row[ZoneTypeField::name()] = (new ZoneTypeField($event->getZone()->getType()))->value();
         $row[ZoneCategoryIdField::name()] = (new ZoneCategoryIdField($event->getZone()->getCategoryId() ?? 0))->value();
         $row[ZoneLanguageField::name()] = (new ZoneLanguageField($event->getZone()->getLanguage()))->value();

@@ -4,44 +4,41 @@ declare(strict_types=1);
 
 namespace Noobus\GrootLib\Entity\Zone;
 
-use Noobus\GrootLib\Entity\ZoneInterface;
 use Noobus\GrootLib\Entity\Zone\ItemValidation\ZoneOfNumericItemsTrait;
+use Noobus\GrootLib\Entity\ZoneInterface;
 
 /**
  * Class CategoryZone
  *
  * @package Noobus\GrootLib\Entity\Zone
  */
-class CategoryZone extends AbstractZone implements ZoneInterface
+class FixedTopQueryZone extends AbstractZone implements ZoneInterface
 {
     use ZoneOfNumericItemsTrait;
 
     /**
      * @var string
      */
-    protected string $type = ZoneType::TYPE_CATEGORY;
+    protected string $type = ZoneType::TYPE_FIXED_TOP_QUERY;
 
     /**
-     * @var int
+     * @var string
      */
-    protected int $categoryId;
+    protected string $fullTextQuery;
 
     /**
      * CategoryZone constructor.
      *
      * @param string $domain
-     * @param int $categoryId
      * @param string $language
      * @param string $group
      */
     public function __construct(
         string $domain,
-        int $categoryId = 0,
         string $language = 'en',
         string $group = ''
     ) {
         $this->domain = $domain;
-        $this->categoryId = $categoryId;
         $this->group = $group;
         $this->language = $language;
     }
@@ -51,7 +48,7 @@ class CategoryZone extends AbstractZone implements ZoneInterface
      */
     public function getCategoryId(): ?int
     {
-        return $this->categoryId;
+        return null;
     }
 
     /**
@@ -62,7 +59,6 @@ class CategoryZone extends AbstractZone implements ZoneInterface
         return serialize([
             'd' => $this->domain,
             'g' => $this->group,
-            'c' => $this->categoryId,
             'l' => $this->language,
         ]);
     }
@@ -74,11 +70,13 @@ class CategoryZone extends AbstractZone implements ZoneInterface
     {
         $data = unserialize($serialized);
         $this->domain = $data['d'];
-        $this->categoryId = $data['c'];
-        $this->group = $data['g'] ?? null;
+        $this->group = $data['g'] ?? '';
         $this->language = $data['l'] ?? 'en';
     }
 
+    /**
+     * @return string
+     */
     public function getSearchKeyword(): string
     {
         return '';

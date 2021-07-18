@@ -8,7 +8,7 @@ interface EventInterface extends \Serializable
 {
     public function getZone(): ZoneInterface;
     public function getItem(): ItemInterface;
-    public function getType(): string;
+    public function getEventType(): string;
     public function getTimestamp(): \DateTimeImmutable;
     public function getAttributes(): array;
     public function getMetrics(): array;

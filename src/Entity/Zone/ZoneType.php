@@ -11,6 +11,9 @@ class ZoneType
     public const TYPE_SEARCH = 'search';
     public const TYPE_RELATED = 'related';
     public const TYPE_MIXED = 'mixed';
+    public const TYPE_QUERY_TREE = 'query_tree';
+    public const TYPE_FIXED_SEARCH_QUERY = 'fixed_search_query';
+    public const TYPE_FIXED_TOP_QUERY = 'fixed_top_query';
 
     public const VALID_TYPES = [
         self::TYPE_CATEGORY,
@@ -18,6 +21,9 @@ class ZoneType
         self::TYPE_SEARCH,
         self::TYPE_RELATED,
         self::TYPE_MIXED,
+        self::TYPE_QUERY_TREE,
+        self::TYPE_FIXED_SEARCH_QUERY,
+        self::TYPE_FIXED_TOP_QUERY,
     ];
 
     /**

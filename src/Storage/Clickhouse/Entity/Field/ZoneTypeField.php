@@ -27,6 +27,9 @@ class ZoneTypeField implements FieldInterface
         3 => ZoneType::TYPE_SEARCH,
         4 => ZoneType::TYPE_RELATED,
         5 => ZoneType::TYPE_MIXED,
+        6 => ZoneType::TYPE_QUERY_TREE,
+        7 => ZoneType::TYPE_FIXED_SEARCH_QUERY,
+        8 => ZoneType::TYPE_FIXED_TOP_QUERY,
     ];
     /**
      *
