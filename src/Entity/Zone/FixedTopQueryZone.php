@@ -22,11 +22,6 @@ class FixedTopQueryZone extends AbstractZone implements ZoneInterface
     protected string $type = ZoneType::TYPE_FIXED_TOP_QUERY;
 
     /**
-     * @var string
-     */
-    protected string $fullTextQuery;
-
-    /**
      * CategoryZone constructor.
      *
      * @param string $domain

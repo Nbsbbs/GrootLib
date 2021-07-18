@@ -9,6 +9,8 @@ use Noobus\GrootLib\Entity\Item\ThumbItem;
 use Noobus\GrootLib\Entity\ItemInterface;
 use Noobus\GrootLib\Entity\UserInterface;
 use Noobus\GrootLib\Entity\Zone\CategoryZone;
+use Noobus\GrootLib\Entity\Zone\FixedSearchQueryZone;
+use Noobus\GrootLib\Entity\Zone\FixedTopQueryZone;
 use Noobus\GrootLib\Entity\Zone\TitleZone;
 use Noobus\GrootLib\Entity\ZoneInterface;
 
@@ -17,6 +19,8 @@ class RotationEvent implements EventInterface
     protected const VALID_ZONE_TYPES = [
         CategoryZone::class,
         TitleZone::class,
+        FixedSearchQueryZone::class,
+        FixedTopQueryZone::class
     ];
 
     /**
