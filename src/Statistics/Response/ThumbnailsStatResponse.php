@@ -92,4 +92,17 @@ class ThumbnailsStatResponse
         $this->sortItems();
         yield from $this->thumbnails;
     }
+
+    /**
+     * @return array
+     */
+    public function ids(): array
+    {
+        $ids = [];
+        foreach ($this->thumbnails as $item) {
+            $ids[] = $item->getId();
+        }
+
+        return $ids;
+    }
 }
