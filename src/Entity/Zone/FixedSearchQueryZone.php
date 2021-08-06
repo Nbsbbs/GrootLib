@@ -95,6 +95,14 @@ class FixedSearchQueryZone extends AbstractZone implements ZoneInterface
     }
 
     /**
+     * @return string
+     */
+    public function getSearchKeywordTranslation(): string
+    {
+        return '';
+    }
+
+    /**
      * @return int
      */
     public function getEmbedId(): int

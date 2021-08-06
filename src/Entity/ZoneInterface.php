@@ -20,6 +20,8 @@ interface ZoneInterface extends \Serializable
 
     public function getSearchKeyword(): string;
 
+    public function getSearchKeywordTranslation(): string;
+
     public function getEmbedId(): int;
 
     public function getFixedSearchId(): int;

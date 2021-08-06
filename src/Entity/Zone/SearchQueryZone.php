@@ -24,24 +24,32 @@ class SearchQueryZone extends AbstractZone implements ZoneInterface
     /**
      * @var string
      */
-    protected string $fullTextQuery;
+    protected string $query;
+
+    /**
+     * @var string
+     */
+    private string $translatedQuery;
 
     /**
      * CategoryZone constructor.
      *
      * @param string $domain
-     * @param string $fullTextQuery
+     * @param string $query
+     * @param string $translatedQuery
      * @param string $language
      * @param string $group
      */
     public function __construct(
         string $domain,
-        string $fullTextQuery,
+        string $query,
+        string $translatedQuery,
         string $language = 'en',
         string $group = ''
     ) {
         $this->domain = $domain;
-        $this->fullTextQuery = $fullTextQuery;
+        $this->query = $query;
+        $this->translatedQuery = $translatedQuery;
         $this->group = $group;
         $this->language = $language;
     }
@@ -62,7 +70,8 @@ class SearchQueryZone extends AbstractZone implements ZoneInterface
         return serialize([
             'd' => $this->domain,
             'g' => $this->group,
-            'ftq' => $this->fullTextQuery,
+            'q' => $this->query,
+            'trq' => $this->translatedQuery,
             'l' => $this->language,
         ]);
     }
@@ -74,14 +83,26 @@ class SearchQueryZone extends AbstractZone implements ZoneInterface
     {
         $data = unserialize($serialized);
         $this->domain = $data['d'];
-        $this->fullTextQuery = $data['ftq'];
+        $this->query = $data['q'];
+        $this->translatedQuery = $data['trq'];
         $this->group = $data['g'] ?? '';
         $this->language = $data['l'] ?? 'en';
     }
 
+    /**
+     * @return string
+     */
     public function getSearchKeyword(): string
     {
-        return $this->fullTextQuery;
+        return $this->query;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSearchKeywordTranslation(): string
+    {
+        return $this->translatedQuery;
     }
 
     /**

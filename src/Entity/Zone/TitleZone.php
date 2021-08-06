@@ -44,6 +44,14 @@ class TitleZone extends AbstractZone implements ZoneInterface
         return '';
     }
 
+    /**
+     * @return string
+     */
+    public function getSearchKeywordTranslation(): string
+    {
+        return '';
+    }
+
     public function getEmbedId(): int
     {
         return 0;

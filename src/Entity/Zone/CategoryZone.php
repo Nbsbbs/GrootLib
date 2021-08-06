@@ -79,7 +79,18 @@ class CategoryZone extends AbstractZone implements ZoneInterface
         $this->language = $data['l'] ?? 'en';
     }
 
+    /**
+     * @return string
+     */
     public function getSearchKeyword(): string
+    {
+        return '';
+    }
+
+    /**
+     * @return string
+     */
+    public function getSearchKeywordTranslation(): string
     {
         return '';
     }
