@@ -65,4 +65,29 @@ class EmbedZone extends AbstractZone implements ZoneInterface
     {
         return $this->embedId;
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function serialize()
+    {
+        return serialize([
+            'domain' => $this->domain,
+            'group' => $this->group,
+            'lang' => $this->language,
+            'embedId' => $this->embedId,
+        ]);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function unserialize($serialized)
+    {
+        $data = unserialize($serialized);
+        $this->domain = $data['domain'];
+        $this->group = $data['group'] ?? '';
+        $this->language = $data['lang'] ?? 'en';
+        $this->embedId = $data['embedId'];
+    }
 }
