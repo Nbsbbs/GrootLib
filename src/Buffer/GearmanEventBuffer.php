@@ -6,7 +6,6 @@ namespace Noobus\GrootLib\Buffer;
 
 use Noobus\GrootLib\Buffer\Gearman\GearmanFactory;
 use Noobus\GrootLib\Entity\EventInterface;
-use Noobus\GrootLib\Buffer\EventBufferInterface;
 use Noobus\GrootLib\Storage\EventStorageInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -19,22 +18,22 @@ class GearmanEventBuffer implements EventBufferInterface, LoggerAwareInterface
     /**
      * @var GearmanFactory
      */
-    private $gearmanFactory;
+    private GearmanFactory $gearmanFactory;
 
     /**
      * @var \GearmanClient
      */
-    private $client;
+    private ?\GearmanClient $client = null;
 
     /**
      * @var \GearmanWorker
      */
-    private $worker;
+    private ?\GearmanWorker $worker = null;
 
     /**
      * @var array
      */
-    private $localBuffer = [];
+    private array $localBuffer = [];
 
     /**
      * GearmanEventBuffer constructor.
@@ -83,36 +82,44 @@ class GearmanEventBuffer implements EventBufferInterface, LoggerAwareInterface
     }
 
     /**
-     * @param EventStorageInterface $storage
+     * @param EventStorageInterface $eventStorage
      * @param int $timeout
      */
-    public function subscribe(EventStorageInterface $storage, int $timeout = 600): void
+    public function subscribe(EventStorageInterface $eventStorage, int $timeout = 600): void
     {
         $startTime = time();
         $this->getWorker()->addFunction(
             $this->getBufferQueue(),
-            function (\GearmanJob $job, EventStorageInterface $storage) {
+            function (\GearmanJob $job, EventStorageInterface $eventStorage) {
                 $data = $job->workload();
-                $this->logger->debug('Serialized event: '.$data);
-                if ($data = unserialize($data)) {
-                    if ($data instanceof EventInterface) {
-                        try {
-                            $storage->save($data);
-                        } catch (\TypeError $error) {
-                            $this->logger->error($error->getMessage());
+                $this->logger->debug('Serialized event: ' . $data);
+                try {
+                    if ($data = unserialize($data)) {
+                        if ($data instanceof EventInterface) {
+                            try {
+                                $eventStorage->save($data);
+                                return true;
+                            } catch (\TypeError $error) {
+                                $this->logger->error($error->getMessage());
+                            }
+                        } else {
+                            $this->logger->warning(sprintf('Unsupported event type %s received', get_class($data)));
                         }
                     } else {
-                        $this->logger->warning(sprintf('Unsupported event type %s received', get_class($data)));
+                        $this->logger->warning(sprintf('Cannot unserialize event: %s', $data));
                     }
+                } catch (\TypeError $error) {
+                    $this->logger->warning(sprintf('Bad serialized event: %s', $error->getMessage()));
                 }
+                return false;
             },
-            $storage
+            $eventStorage
         );
 
         while ($this->getWorker()->work()) {
             if ($this->getWorker()->returnCode() != GEARMAN_SUCCESS) {
                 $this->logger->error('Return code ' . $this->getWorker()->returnCode() . ' from gearman');
-                break;
+                return;
             }
 
             $runningTime = time() - $startTime;

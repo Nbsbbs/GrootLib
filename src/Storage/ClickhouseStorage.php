@@ -28,28 +28,32 @@ class ClickhouseStorage implements EventStorageInterface
      */
     public function save(EventInterface $event)
     {
-        $client = $this->clientFactory->getClient();
-        $table = $this->getTableObject($event);
-        if (($event instanceof ThumbEvent) and ($table instanceof ThumbEventTable)) {
-            $row = $table->createRow($event);
-            $client->insert(
-                $table::getBufferName(),
-                [
-                    array_values($row),
-                ],
-                array_keys($row)
-            );
-        } elseif (($event instanceof RotationEvent) and ($table instanceof RotationEventTable)) {
-            $row = $table->createRow($event);
-            $client->insert(
-                $table::getBufferName(),
-                [
-                    array_values($row),
-                ],
-                array_keys($row)
-            );
-        } else {
-            throw new \InvalidArgumentException('event must be instance of ThumbEvent to be processed by ThumbEventTable');
+        try {
+            $client = $this->clientFactory->getClient();
+            $table = $this->getTableObject($event);
+            if (($event instanceof ThumbEvent) and ($table instanceof ThumbEventTable)) {
+                $row = $table->createRow($event);
+                $client->insert(
+                    $table::getBufferName(),
+                    [
+                        array_values($row),
+                    ],
+                    array_keys($row)
+                );
+            } elseif (($event instanceof RotationEvent) and ($table instanceof RotationEventTable)) {
+                $row = $table->createRow($event);
+                $client->insert(
+                    $table::getBufferName(),
+                    [
+                        array_values($row),
+                    ],
+                    array_keys($row)
+                );
+            } else {
+                throw new \InvalidArgumentException('event must be instance of ThumbEvent to be processed by ThumbEventTable');
+            }
+        } catch (\Throwable $e) {
+            throw new \RuntimeException('Storage save error: '.$e->getMessage());
         }
     }
 

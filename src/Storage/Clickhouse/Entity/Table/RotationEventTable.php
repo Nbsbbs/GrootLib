@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Noobus\GrootLib\Storage\Clickhouse\Entity\Table;
 
 use Noobus\GrootLib\Entity\Event\RotationEvent;
-use Noobus\GrootLib\Entity\Event\ThumbEvent;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\DateTimeField;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\EventTypeField;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\EventZonePlaceIdField;
@@ -89,8 +88,8 @@ class RotationEventTable implements TableInterface
         $row[ZoneDomainField::name()] = (new ZoneDomainField($event->getZone()->getDomain()))->value();
         $row[ZoneSearchKeywordField::name()] = (new ZoneSearchKeywordField($event->getZone()
                                                                                  ->getSearchKeyword()))->value();
-        $row[ZoneSearchKeywordTranslationField::name()] =(new ZoneSearchKeywordField($event->getZone()
-                                                                                           ->getSearchKeywordTranslation()))->value();
+        $row[ZoneSearchKeywordTranslationField::name()] = (new ZoneSearchKeywordTranslationField($event->getZone()
+                                                                                                       ->getSearchKeywordTranslation()))->value();
         $row[ZoneEmbedIdField::name()] = (new ZoneEmbedIdField($event->getZone()->getEmbedId()))->value();
         $row[ZoneGroupField::name()] = (new ZoneGroupField($event->getZone()->getGroup()))->value();
 

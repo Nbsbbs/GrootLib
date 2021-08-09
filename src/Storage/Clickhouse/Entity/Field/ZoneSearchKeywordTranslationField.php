@@ -11,28 +11,43 @@ class ZoneSearchKeywordTranslationField implements FieldInterface
     /**
      * @var string
      */
-    private $keyword;
+    private string $keyword;
 
+    /**
+     * @param string $keyword
+     */
     public function __construct(string $keyword)
     {
         $this->keyword = $keyword;
     }
 
-    public function isValid()
+    /**
+     * @return bool
+     */
+    public function isValid(): bool
     {
         return true;
     }
 
-    public function value()
+    /**
+     * @return string
+     */
+    public function value(): string
     {
         return $this->keyword;
     }
 
+    /**
+     * @return string
+     */
     public static function name(): string
     {
         return self::NAME;
     }
 
+    /**
+     * @return string
+     */
     public static function toSql(): string
     {
         return sprintf('`%s` String', static::name());
