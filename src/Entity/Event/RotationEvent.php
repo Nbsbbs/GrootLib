@@ -9,6 +9,7 @@ use Noobus\GrootLib\Entity\Item\ThumbItem;
 use Noobus\GrootLib\Entity\ItemInterface;
 use Noobus\GrootLib\Entity\UserInterface;
 use Noobus\GrootLib\Entity\Zone\CategoryZone;
+use Noobus\GrootLib\Entity\Zone\EmbedZone;
 use Noobus\GrootLib\Entity\Zone\FixedSearchQueryZone;
 use Noobus\GrootLib\Entity\Zone\FixedTopQueryZone;
 use Noobus\GrootLib\Entity\Zone\SearchQueryZone;
@@ -23,6 +24,7 @@ class RotationEvent implements EventInterface
         FixedSearchQueryZone::class,
         FixedTopQueryZone::class,
         SearchQueryZone::class,
+        EmbedZone::class,
     ];
 
     /**
@@ -71,12 +73,12 @@ class RotationEvent implements EventInterface
      * @param \DateTimeImmutable $timestamp
      */
     public function __construct(
-        string $eventType,
-        string $rotationId,
-        string $pagePlaceId,
-        ThumbItem $thumb,
-        UserInterface $user,
-        ZoneInterface $zone,
+        string             $eventType,
+        string             $rotationId,
+        string             $pagePlaceId,
+        ThumbItem          $thumb,
+        UserInterface      $user,
+        ZoneInterface      $zone,
         \DateTimeImmutable $timestamp
     ) {
         $this->thumb = $thumb;
