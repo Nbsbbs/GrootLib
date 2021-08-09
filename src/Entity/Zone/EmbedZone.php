@@ -8,7 +8,7 @@ use Noobus\GrootLib\Entity\ZoneInterface;
 use Noobus\GrootLib\Entity\Zone\ItemValidation\ZoneOfNumericItemsTrait;
 
 /**
- * Class CategoryZone
+ * Class EmbedZone
  *
  * @package Noobus\GrootLib\Entity\Zone
  */
