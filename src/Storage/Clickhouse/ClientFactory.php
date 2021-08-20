@@ -34,6 +34,7 @@ class ClientFactory
             'password' => $this->config->getPassword(),
         ]);
         $client->database($this->config->getDatabase());
+        $client->enableLogQueries(false);
 
         return $client;
     }
