@@ -1,6 +1,6 @@
 <?php
 
-namespace Noobus\GrootLib\Service;
+namespace Noobus\GrootLib\Statistics\Service;
 
 use ClickHouseDB\Client;
 use Nbsbbs\Common\ThumbnailIdentifier;
