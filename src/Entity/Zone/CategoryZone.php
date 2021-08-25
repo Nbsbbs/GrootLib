@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Noobus\GrootLib\Entity\Zone;
 
-use Noobus\GrootLib\Entity\ZoneInterface;
 use Noobus\GrootLib\Entity\Zone\ItemValidation\ZoneOfNumericItemsTrait;
+use Noobus\GrootLib\Entity\ZoneInterface;
 
 /**
  * Class CategoryZone
@@ -26,6 +26,10 @@ class CategoryZone extends AbstractZone implements ZoneInterface
      */
     protected int $categoryId;
 
+    protected string $searchQuery = '';
+
+    protected string $translatedSearchQuery = '';
+
     /**
      * CategoryZone constructor.
      *
@@ -36,7 +40,7 @@ class CategoryZone extends AbstractZone implements ZoneInterface
      */
     public function __construct(
         string $domain,
-        int $categoryId = 0,
+        int    $categoryId = 0,
         string $language = 'en',
         string $group = ''
     ) {
@@ -64,6 +68,8 @@ class CategoryZone extends AbstractZone implements ZoneInterface
             'g' => $this->group,
             'c' => $this->categoryId,
             'l' => $this->language,
+            'q' => $this->searchQuery,
+            'trq' => $this->translatedSearchQuery,
         ]);
     }
 
@@ -77,6 +83,23 @@ class CategoryZone extends AbstractZone implements ZoneInterface
         $this->categoryId = $data['c'];
         $this->group = $data['g'] ?? null;
         $this->language = $data['l'] ?? 'en';
+        $this->searchQuery = $data['q'] ?? '';
+        $this->translatedSearchQuery = $data['trq'] ?? '';
+    }
+
+    /**
+     * @param string $searchQuery
+     * @param string $translatedSearchQuery
+     * @return CategoryZone
+     */
+    public function withSearchQuery(string $searchQuery, string $translatedSearchQuery = ''): self
+    {
+        if ($translatedSearchQuery === '') {
+            $translatedSearchQuery = $searchQuery;
+        }
+        $this->searchQuery = $searchQuery;
+        $this->translatedSearchQuery = $translatedSearchQuery;
+        return $this;
     }
 
     /**
@@ -84,7 +107,7 @@ class CategoryZone extends AbstractZone implements ZoneInterface
      */
     public function getSearchKeyword(): string
     {
-        return '';
+        return $this->searchQuery;
     }
 
     /**
@@ -92,7 +115,7 @@ class CategoryZone extends AbstractZone implements ZoneInterface
      */
     public function getSearchKeywordTranslation(): string
     {
-        return '';
+        return $this->translatedSearchQuery;
     }
 
     /**
