@@ -57,7 +57,7 @@ class ThumbnailsStatService
                             AND %s>today()-:days_interval 
                             AND (ItemGalleryId, ItemThumbId) IN (%s)
                             GROUP BY ItemGalleryId, ItemThumbId
-                            HAVING Views>:minViews
+                            HAVING Views>:min_views
                             ORDER BY Ctr DESC',
             ItemGalleryIdField::name(),
             ItemThumbIdField::name(),
