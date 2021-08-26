@@ -16,12 +16,12 @@ class ThumbItem implements ItemInterface
     /**
      * @var string
      */
-    private $id;
+    private string $id;
 
     /**
      * @var string
      */
-    private $galleryId;
+    private string $galleryId;
 
     /**
      * ThumbItem constructor.
@@ -31,10 +31,10 @@ class ThumbItem implements ItemInterface
      */
     public function __construct(string $id, string $galleryId)
     {
-        if ($id < 1) {
+        if (intval($id) < 1) {
             throw new \InvalidArgumentException('Thumb id must be positive integer: '.$id);
         }
-        if ($galleryId < 1) {
+        if (intval($galleryId) < 1) {
             throw new \InvalidArgumentException('Gallery id must be positive integer: '.$id);
         }
         $this->id = $id;
