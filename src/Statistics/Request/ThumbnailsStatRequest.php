@@ -6,6 +6,8 @@ use Nbsbbs\Common\ThumbnailIdentifier;
 
 class ThumbnailsStatRequest
 {
+    private const DEFAULT_MIN_VIEWS = 100;
+
     /**
      * @var array
      */
@@ -22,6 +24,11 @@ class ThumbnailsStatRequest
     protected ?string $domain = null;
 
     /**
+     * @var int
+     */
+    protected int $minViews = self::DEFAULT_MIN_VIEWS;
+
+    /**
      * @param array $thumbnails
      * @param string $statGroup
      * @param string|null $domain
@@ -36,6 +43,27 @@ class ThumbnailsStatRequest
         $this->thumbnails = $thumbnails;
         $this->statGroup = $statGroup;
         $this->domain = $domain;
+    }
+
+    /**
+     * @param int $minViews
+     * @return $this
+     */
+    public function withMinViews(int $minViews): self
+    {
+        if ($minViews < 0) {
+            throw new \InvalidArgumentException('minViews must be positive integer or zero');
+        }
+        $this->minViews = $minViews;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMinViews(): int
+    {
+        return $this->minViews;
     }
 
     /**

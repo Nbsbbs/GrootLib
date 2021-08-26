@@ -57,6 +57,7 @@ class ThumbnailsStatService
                             AND %s>today()-:days_interval 
                             AND (ItemGalleryId, ItemThumbId) IN (%s)
                             GROUP BY ItemGalleryId, ItemThumbId
+                            HAVING Views>:minViews
                             ORDER BY Ctr DESC',
             ItemGalleryIdField::name(),
             ItemThumbIdField::name(),
@@ -80,6 +81,7 @@ class ThumbnailsStatService
         return [
             'zone_group' => $request->getStatGroup(),
             'days_interval' => 365,
+            'min_views' => $request->getMinViews(),
         ];
     }
 
