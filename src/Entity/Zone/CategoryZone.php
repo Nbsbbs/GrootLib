@@ -26,8 +26,14 @@ class CategoryZone extends AbstractZone implements ZoneInterface
      */
     protected int $categoryId;
 
+    /**
+     * @var string
+     */
     protected string $searchQuery = '';
 
+    /**
+     * @var string
+     */
     protected string $translatedSearchQuery = '';
 
     /**

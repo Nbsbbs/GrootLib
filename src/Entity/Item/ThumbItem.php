@@ -31,6 +31,12 @@ class ThumbItem implements ItemInterface
      */
     public function __construct(string $id, string $galleryId)
     {
+        if ($id < 1) {
+            throw new \InvalidArgumentException('Thumb id must be positive integer: '.$id);
+        }
+        if ($galleryId < 1) {
+            throw new \InvalidArgumentException('Gallery id must be positive integer: '.$id);
+        }
         $this->id = $id;
         $this->galleryId = $galleryId;
     }
