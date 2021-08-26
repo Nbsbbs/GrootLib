@@ -7,6 +7,7 @@ namespace Noobus\GrootLib\Storage\Clickhouse\Entity\Table;
 use Noobus\GrootLib\Entity\Event\RotationEvent;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\DateTimeField;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\EventTypeField;
+use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\EventUrlField;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\EventZonePlaceIdField;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\ItemGalleryIdField;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\ItemRotationIdField;
@@ -34,6 +35,7 @@ class RotationEventTable implements TableInterface
     protected const BUFFER_NAME = 'stat_rotation_events_buffer';
     protected const FIELDS = [
         DateTimeField::class,
+        EventUrlField::class,
         EventTypeField::class,
         //
         EventZonePlaceIdField::class,
@@ -71,6 +73,7 @@ class RotationEventTable implements TableInterface
     public function createRow(RotationEvent $event): array
     {
         $row[DateTimeField::name()] = (new DateTimeField($event->getTimestamp()))->value();
+        $row[EventUrlField::name()] = (new EventUrlField($event->getEventUrl()))->value();
         $row[EventTypeField::name()] = (new EventTypeField($event->getEventType()))->value();
         $row[EventZonePlaceIdField::name()] = (new EventZonePlaceIdField($event->getPagePlaceId()))->value();
         $row[ItemRotationIdField::name()] = (new ItemRotationIdField($event->getRotationId()))->value();

@@ -63,6 +63,11 @@ class RotationEvent implements EventInterface
     private \DateTimeImmutable $timestamp;
 
     /**
+     * @var string
+     */
+    private string $eventUrl = '';
+
+    /**
      * ThumbEvent constructor.
      *
      * @param string $eventType
@@ -133,6 +138,7 @@ class RotationEvent implements EventInterface
             'rotationId' => $this->rotationId,
             'pagePlaceId' => $this->pagePlaceId,
             'timestamp' => $this->timestamp,
+            'eventUrl' => $this->eventUrl,
         ]);
     }
 
@@ -149,6 +155,25 @@ class RotationEvent implements EventInterface
         $this->rotationId = $data['rotationId'];
         $this->pagePlaceId = $data['pagePlaceId'];
         $this->timestamp = $data['timestamp'];
+        $this->eventUrl = $data['eventUrl'] ?? '';
+    }
+
+    /**
+     * @param string $url
+     * @return $this
+     */
+    public function withEventUrl(string $url): self
+    {
+        $this->eventUrl = $url;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEventUrl(): string
+    {
+        return $this->eventUrl;
     }
 
     public function getZone(): ZoneInterface
