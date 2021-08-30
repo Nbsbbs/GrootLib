@@ -46,11 +46,47 @@ class ThumbnailsStatService
 
     protected function createSqlQuery(ThumbnailsStatRequest $request): string
     {
+        if ($request->getCustomTableName()) {
+            return $this->createCustomTableSqlQuery($request);
+        }
+
         $query = sprintf(
             'select  %s as ItemGalleryId, 
                             %s AS ItemThumbId, 
                             sumIf(1, %s=\'click\') AS Clicks, 
                             sumIf(1, %s=\'view\') AS Views, 
+                            if(Views>0, Clicks/Views, 0) AS Ctr 
+                        FROM %s 
+                        WHERE %s=:zone_group 
+                            AND %s>today()-:days_interval 
+                            AND (ItemGalleryId, ItemThumbId) IN (%s)
+                            GROUP BY ItemGalleryId, ItemThumbId
+                            HAVING Views>:min_views
+                            ORDER BY Ctr DESC',
+            ItemGalleryIdField::name(),
+            ItemThumbIdField::name(),
+            EventTypeField::name(),
+            EventTypeField::name(),
+            $request->getCustomTableName() ?? RotationEventTable::getName(),
+            ZoneGroupField::name(),
+            DateTimeField::name(),
+            $this->createInStatementPart($request->getThumbnails()),
+        );
+
+        return $query;
+    }
+
+    /**
+     * @param ThumbnailsStatRequest $request
+     * @return string
+     */
+    protected function createCustomTableSqlQuery(ThumbnailsStatRequest $request): string
+    {
+        $query = sprintf(
+            'select  %s as ItemGalleryId, 
+                            %s AS ItemThumbId, 
+                            sum(Clicks) as Clicks, 
+                            sum(Views) as Views, 
                             if(Views>0, Clicks/Views, 0) AS Ctr 
                         FROM %s 
                         WHERE %s=:zone_group 
@@ -60,8 +96,6 @@ class ThumbnailsStatService
                             ORDER BY Ctr DESC',
             ItemGalleryIdField::name(),
             ItemThumbIdField::name(),
-            EventTypeField::name(),
-            EventTypeField::name(),
             $request->getCustomTableName() ?? RotationEventTable::getName(),
             ZoneGroupField::name(),
             $this->createInStatementPart($request->getThumbnails()),
@@ -78,6 +112,7 @@ class ThumbnailsStatService
     {
         return [
             'zone_group' => $request->getStatGroup(),
+            'days_interval' => 365,
             'min_views' => $request->getMinViews(),
         ];
     }
