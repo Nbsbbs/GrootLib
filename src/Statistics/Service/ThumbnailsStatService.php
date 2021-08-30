@@ -54,7 +54,6 @@ class ThumbnailsStatService
                             if(Views>0, Clicks/Views, 0) AS Ctr 
                         FROM %s 
                         WHERE %s=:zone_group 
-                            AND %s>today()-:days_interval 
                             AND (ItemGalleryId, ItemThumbId) IN (%s)
                             GROUP BY ItemGalleryId, ItemThumbId
                             HAVING Views>:min_views
@@ -65,7 +64,6 @@ class ThumbnailsStatService
             EventTypeField::name(),
             $request->getCustomTableName() ?? RotationEventTable::getName(),
             ZoneGroupField::name(),
-            DateTimeField::name(),
             $this->createInStatementPart($request->getThumbnails()),
         );
 
@@ -80,7 +78,6 @@ class ThumbnailsStatService
     {
         return [
             'zone_group' => $request->getStatGroup(),
-            'days_interval' => 365,
             'min_views' => $request->getMinViews(),
         ];
     }
