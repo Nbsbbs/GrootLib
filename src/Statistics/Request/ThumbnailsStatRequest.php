@@ -29,6 +29,11 @@ class ThumbnailsStatRequest
     protected int $minViews = self::DEFAULT_MIN_VIEWS;
 
     /**
+     * @var string|null
+     */
+    protected ?string $customTableName = null;
+
+    /**
      * @param array $thumbnails
      * @param string $statGroup
      * @param string|null $domain
@@ -46,6 +51,16 @@ class ThumbnailsStatRequest
     }
 
     /**
+     * @param string $table
+     * @return $this
+     */
+    public function withTableName(string $table): self
+    {
+        $this->customTableName = $table;
+        return $this;
+    }
+
+    /**
      * @param int $minViews
      * @return $this
      */
@@ -56,6 +71,14 @@ class ThumbnailsStatRequest
         }
         $this->minViews = $minViews;
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCustomTableName(): string
+    {
+        return $this->customTableName;
     }
 
     /**

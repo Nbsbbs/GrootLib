@@ -63,7 +63,7 @@ class ThumbnailsStatService
             ItemThumbIdField::name(),
             EventTypeField::name(),
             EventTypeField::name(),
-            RotationEventTable::getName(),
+            $request->getCustomTableName() ?? RotationEventTable::getName(),
             ZoneGroupField::name(),
             DateTimeField::name(),
             $this->createInStatementPart($request->getThumbnails()),
