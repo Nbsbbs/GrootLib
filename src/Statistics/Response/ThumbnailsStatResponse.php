@@ -21,10 +21,39 @@ class ThumbnailsStatResponse
      */
     private ?float $elapsedTime = null;
 
+    /**
+     * @var int
+     */
+    private int $totalRows = 0;
+
+    /**
+     * @return int
+     */
+    public function getTotalRows(): int
+    {
+        return $this->totalRows;
+    }
+
+    /**
+     * @param int $totalRows
+     */
+    public function setTotalRows(int $totalRows): void
+    {
+        $this->totalRows = $totalRows;
+    }
+
     public function pushItem(ThumbnailStat $thumbnailStat)
     {
         $this->thumbnails[$thumbnailStat->getId()] = $thumbnailStat;
         $this->isSorted = false;
+    }
+
+    /**
+     * @return float|null
+     */
+    public function getElapsedTime(): ?float
+    {
+        return $this->elapsedTime;
     }
 
     /**
@@ -35,14 +64,6 @@ class ThumbnailsStatResponse
     {
         $this->elapsedTime = $time;
         return $this;
-    }
-
-    /**
-     * @return float|null
-     */
-    public function getElapsedTime(): ?float
-    {
-        return $this->elapsedTime;
     }
 
     /**
@@ -79,7 +100,7 @@ class ThumbnailsStatResponse
     /**
      * @return int
      */
-    public function getTotalItems(): int
+    public function getItemsCount(): int
     {
         return sizeof($this->thumbnails);
     }
