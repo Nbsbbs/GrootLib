@@ -22,3 +22,6 @@ var_dump($response->getElapsedTime());
 
 var_dump($response->getItemsCount());
 
+foreach ($response->walkItems() as $item) {
+    echo $item->getGalleryId().":".$item->getThumbnailId().PHP_EOL;
+}

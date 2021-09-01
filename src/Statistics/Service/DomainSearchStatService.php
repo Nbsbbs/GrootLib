@@ -5,9 +5,9 @@ namespace Noobus\GrootLib\Statistics\Service;
 use ClickHouseDB\Client;
 use ClickHouseDB\Statement;
 use Exception;
-use Noobus\GrootLib\Statistics\Clickhouse\Thumbs\ThumbnailStat;
+use Noobus\GrootLib\Statistics\Clickhouse\GalleryWithThumbnailStat;
 use Noobus\GrootLib\Statistics\Request\DomainSearchStatRequest;
-use Noobus\GrootLib\Statistics\Response\ThumbnailsStatResponse;
+use Noobus\GrootLib\Statistics\Response\GalleriesWithThumbnailsStatResponse;
 use Noobus\GrootLib\Storage\Clickhouse\ClientFactory;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\ItemGalleryIdField;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\ItemThumbIdField;
@@ -37,8 +37,11 @@ class DomainSearchStatService
      * @param string $database
      * @param string $table
      */
-    public function __construct(ClientFactory $clientFactory, string $database = 'test', string $table = 'stat_rotation_events_search_by_key')
-    {
+    public function __construct(
+        ClientFactory $clientFactory,
+        string        $database = 'test',
+        string        $table = 'stat_rotation_events_search_by_key'
+    ) {
         $this->client = $clientFactory->getClient();
         $this->database = $database;
         $this->table = $table;
@@ -46,10 +49,10 @@ class DomainSearchStatService
 
     /**
      * @param DomainSearchStatRequest $request
-     * @return ThumbnailsStatResponse
+     * @return GalleriesWithThumbnailsStatResponse
      * @throws Exception
      */
-    public function getStats(DomainSearchStatRequest $request): ThumbnailsStatResponse
+    public function getStats(DomainSearchStatRequest $request): GalleriesWithThumbnailsStatResponse
     {
         if (!$request->getDomain()) {
             $statement = $this->sqlRequestWithoutDomain($request);
@@ -82,7 +85,7 @@ class DomainSearchStatService
                             LIMIT :limit OFFSET :offset',
             ItemGalleryIdField::name(),
             ItemThumbIdField::name(),
-            $this->database.'.'.$this->table,
+            $this->database . '.' . $this->table,
             ZoneGroupField::name(),
             ZoneDomainField::name(),
             ZoneSearchKeywordTranslationField::name(),
@@ -115,7 +118,7 @@ class DomainSearchStatService
                             LIMIT :limit OFFSET :offset',
             ItemGalleryIdField::name(),
             ItemThumbIdField::name(),
-            $this->database.'.'.$this->table,
+            $this->database . '.' . $this->table,
             ZoneGroupField::name(),
             ZoneSearchKeywordTranslationField::name(),
             ItemGalleryIdField::name(),
@@ -128,15 +131,15 @@ class DomainSearchStatService
 
     /**
      * @param Statement $statement
-     * @return ThumbnailsStatResponse
+     * @return GalleriesWithThumbnailsStatResponse
      */
-    protected function processStatement(Statement $statement): ThumbnailsStatResponse
+    protected function processStatement(Statement $statement): GalleriesWithThumbnailsStatResponse
     {
-        $response = new ThumbnailsStatResponse();
+        $response = new GalleriesWithThumbnailsStatResponse();
         $response->setTotalRows($statement->countAll());
         $response->setElapsedTime($statement->statistics('elapsed'));
         foreach ($statement->rows() as $row) {
-            $thumbnailStat = new ThumbnailStat($row['ItemThumbId'], $row['Clicks'], $row['Views'], $row['Ctr']);
+            $thumbnailStat = new GalleryWithThumbnailStat($row['ItemGalleryId'], $row['ItemThumbId'], $row['Clicks'], $row['Views'], $row['Ctr']);
             $response->pushItem($thumbnailStat);
         }
 
