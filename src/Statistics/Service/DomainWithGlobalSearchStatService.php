@@ -17,6 +17,8 @@ use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\ZoneSearchKeywordTranslation
 
 class DomainWithGlobalSearchStatService
 {
+    public const BASIC_VIEWS = 500;
+
     /**
      * @var Client
      */
@@ -36,6 +38,11 @@ class DomainWithGlobalSearchStatService
      * @var string
      */
     private string $globalCtrTable;
+
+    /**
+     * @var int
+     */
+    private int $totalItems = 0;
 
     /**
      * @param ClientFactory $clientFactory
@@ -75,6 +82,21 @@ class DomainWithGlobalSearchStatService
         return $processedStatement;
     }
 
+    /**
+     * @param string $table
+     * @return int
+     */
+    protected function countTotalItems(string $table): int
+    {
+        $query = sprintf('SELECT COUNT(*) as cnt FROM %s', $table);
+        $statement = $this->client->select($query, []);
+        foreach ($statement->rows() as $row) {
+            $this->totalItems = $row['cnt'];
+        }
+
+        return $this->totalItems;
+    }
+
     protected function createSearchStatCtrTable(DomainSearchStatRequest $searchStatRequest): string
     {
         $table = 'ctr1_' . mt_rand(0, 1000000);
@@ -98,7 +120,8 @@ class DomainWithGlobalSearchStatService
             ItemGalleryIdField::name(),
             ItemThumbIdField::name());
 
-        $result = $this->client->select($query, $this->createSqlRequestData($searchStatRequest));
+        $this->client->select($query, $this->createSqlRequestData($searchStatRequest));
+        $this->countTotalItems($table);
 
         return $table;
     }
@@ -139,7 +162,11 @@ class DomainWithGlobalSearchStatService
         $table2 = $this->createGlobalStatCtrTable($table1);
 
         $query = sprintf(
-            'SELECT t1.ItemGalleryId, t1.ItemThumbId, t1.Clicks as cs, t1.Views as vs, t2.Clicks as c0, t2.Views as v0, if(v0>200, 200, v0) as vn0, if(v0>200, toUInt64(200*c0/v0), c0) as cn0, (vs+vn0) as vt, (cs+cn0) as ct, if(vt>0, ct/vt, 0) as ctr FROM %s t1 LEFT OUTER JOIN %s t2 ON (t1.ItemGalleryId=t2.ItemGalleryId AND t1.ItemThumbId=t2.ItemThumbId) order by ctr desc limit :limit offset :offset',
+            'SELECT t1.ItemGalleryId, t1.ItemThumbId, t1.Clicks as cs, t1.Views as vs, t2.Clicks as c0, t2.Views as v0, if(v0>%s, %s, v0) as vn0, if(v0>%s, toUInt64(%s*c0/v0), c0) as cn0, (vs+vn0) as vt, (cs+cn0) as ct, if(vt>0, ct/vt, 0) as ctr FROM %s t1 LEFT OUTER JOIN %s t2 ON (t1.ItemGalleryId=t2.ItemGalleryId AND t1.ItemThumbId=t2.ItemThumbId) order by ctr desc limit :limit offset :offset',
+            self::BASIC_VIEWS,
+            self::BASIC_VIEWS,
+            self::BASIC_VIEWS,
+            self::BASIC_VIEWS,
             $table1,
             $table2
         );
@@ -154,7 +181,7 @@ class DomainWithGlobalSearchStatService
     protected function processStatement(Statement $statement): GalleriesWithThumbnailsStatResponse
     {
         $response = new GalleriesWithThumbnailsStatResponse();
-        $response->setTotalRows($statement->countAll());
+        $response->setTotalRows($this->totalItems);
 
         foreach ($statement->rows() as $row) {
             $thumbnailStat = new GalleryWithThumbnailStat($row['ItemGalleryId'], $row['ItemThumbId'], $row['ct'], $row['vt'], $row['ctr']);

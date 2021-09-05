@@ -15,7 +15,7 @@ $clientFactory = new ClientFactory($config);
 
 $service = new DomainWithGlobalSearchStatService($clientFactory);
 
-$request = new DomainSearchStatRequest('demybus', 'mom', 'teentubefuck.com');
+$request = new DomainSearchStatRequest('demybus', 'green hair', 'hottmovs.com');
 $request->withLimitOffset(100, 0);
 $response = $service->getStats($request);
 
@@ -24,5 +24,5 @@ var_dump($response->getItemsCount());
 var_dump($response->getTotalRows());
 
 foreach ($response->walkItems() as $item) {
-    // echo $item->getGalleryId().":".$item->getThumbnailId().PHP_EOL;
+    echo $item->getGalleryId().":".$item->getThumbnailId().' => '.$item->getCtr().PHP_EOL;
 }
