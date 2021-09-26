@@ -3,15 +3,14 @@
 namespace Noobus\GrootLib\Statistics\Service;
 
 use ClickHouseDB\Client;
-use Noobus\GrootLib\Statistics\Clickhouse\Thumbs\GalleryStat;
+use Noobus\GrootLib\Statistics\Clickhouse\Galleries\GalleryStat;
 use Noobus\GrootLib\Statistics\Request\GallerySearchResultStatRequest;
-use Noobus\GrootLib\Statistics\Response\ThumbnailsStatResponse;
+use Noobus\GrootLib\Statistics\Response\GalleriesStatResponse;
 use Noobus\GrootLib\Storage\Clickhouse\ClientFactory;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\ItemGalleryIdField;
-use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\ItemThumbIdField;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\ZoneDomainField;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\ZoneGroupField;
-use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\ZoneSearchKeywordField;
+use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\ZoneSearchKeywordTranslationField;
 
 class GallerySearchResultStatService
 {
@@ -41,11 +40,11 @@ class GallerySearchResultStatService
 
     /**
      * @param GallerySearchResultStatRequest $request
-     * @return ThumbnailsStatResponse
+     * @return GalleriesStatResponse
      */
-    public function getStats(GallerySearchResultStatRequest $request): ThumbnailsStatResponse
+    public function getStats(GallerySearchResultStatRequest $request): GalleriesStatResponse
     {
-        $requestSql = $this->createSqlQuery();
+        $requestSql = $this->createSqlQuery($request);
         $requestData = $this->createSqlRequestData($request);
 
         $startTime = microtime(true);
@@ -53,11 +52,11 @@ class GallerySearchResultStatService
 
         $endTime = microtime(true);
 
-        $response = new ThumbnailsStatResponse();
+        $response = new GalleriesStatResponse();
         $response->setElapsedTime($endTime - $startTime);
 
         foreach ($result->rows() as $row) {
-            $thumbnailStat = new GalleryStat($row['ItemThumbId'], $row['Clicks'], $row['Views'], $row['Ctr']);
+            $thumbnailStat = new GalleryStat($row['ItemGalleryId'], $row['Clicks'], $row['Views'], $row['Ctr']);
             $response->pushItem($thumbnailStat);
         }
 
@@ -65,9 +64,10 @@ class GallerySearchResultStatService
     }
 
     /**
+     * @param GallerySearchResultStatRequest $request
      * @return string
      */
-    protected function createSqlQuery(): string
+    protected function createSqlQuery(GallerySearchResultStatRequest $request): string
     {
         $query = sprintf(
             'select  %s AS ItemGalleryId, 
@@ -78,17 +78,18 @@ class GallerySearchResultStatService
                         WHERE %s=:zone_group 
                             AND %s=:domain
                             AND %s=:search_request
-                            AND %s IN (:gallery_ids)
+                            AND %s IN (%s)
                             GROUP BY %s
                             HAVING Views>:min_views
                             ORDER BY Ctr DESC
                             LIMIT :limit OFFSET :offset',
-            ItemThumbIdField::name(),
+            ItemGalleryIdField::name(),
             $this->table,
             ZoneGroupField::name(),
             ZoneDomainField::name(),
-            ZoneSearchKeywordField::name(),
+            ZoneSearchKeywordTranslationField::name(),
             ItemGalleryIdField::name(),
+            implode(', ', $request->getGalleryIds()),
             ItemGalleryIdField::name(),
         );
 
