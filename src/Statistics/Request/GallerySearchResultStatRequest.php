@@ -4,6 +4,8 @@ namespace Noobus\GrootLib\Statistics\Request;
 
 class GallerySearchResultStatRequest
 {
+    public const DEFAULT_THUMB_RATING = 0.0202739;
+
     /**
      * @var array
      */
@@ -40,6 +42,11 @@ class GallerySearchResultStatRequest
     private int $minViews = 100;
 
     /**
+     * @var float
+     */
+    private float $defaultCtr = self::DEFAULT_THUMB_RATING;
+
+    /**
      * SearchResultStatRequest constructor.
      *
      * @param string $statisticsGroup
@@ -69,6 +76,24 @@ class GallerySearchResultStatRequest
         $this->limit = $limit;
         $this->offset = $offset;
         return $this;
+    }
+
+    /**
+     * @param float $ctr
+     * @return $this
+     */
+    public function withDefaultCtr(float $ctr): self
+    {
+        $this->defaultCtr = $ctr;
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getDefaultCtr(): float
+    {
+        return $this->defaultCtr;
     }
 
     /**
