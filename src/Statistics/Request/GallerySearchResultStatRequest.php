@@ -4,7 +4,7 @@ namespace Noobus\GrootLib\Statistics\Request;
 
 class GallerySearchResultStatRequest
 {
-    public const DEFAULT_THUMB_RATING = 0.0202739;
+    public const DEFAULT_THUMB_RATING = 0.0102739;
 
     /**
      * @var array
@@ -39,7 +39,7 @@ class GallerySearchResultStatRequest
     /**
      * @var int
      */
-    private int $minViews = 100;
+    private int $minViews = 10;
 
     /**
      * @var float
@@ -64,6 +64,16 @@ class GallerySearchResultStatRequest
         $this->translatedSearchQuery = $searchRequest;
         $this->domain = $domain;
         $this->galleryIds = $galleryIds;
+    }
+
+    /**
+     * @param int $minViews
+     * @return $this
+     */
+    public function withMinViews(int $minViews): self
+    {
+        $this->minViews = $minViews;
+        return $this;
     }
 
     /**
