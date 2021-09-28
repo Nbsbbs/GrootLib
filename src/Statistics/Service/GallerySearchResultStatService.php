@@ -64,7 +64,7 @@ class GallerySearchResultStatService
     protected function createPrimaryTempTable(GallerySearchResultStatRequest $request): void
     {
         $query = sprintf(
-            'CREATE TEMPORARY TABLE gsrss_temp_items AS SELECT arrayJoin([%s]) as GalleryId, %.6f as DefaultCtr',
+            'CREATE TEMPORARY TABLE gsrss_temp_items AS SELECT arrayJoin([%s]) as GalleryId, %.6f*(1+rand(GalleryId)/4294967295) as DefaultCtr',
             implode(', ', $request->getGalleryIds()),
             $request->getDefaultCtr()
         );
