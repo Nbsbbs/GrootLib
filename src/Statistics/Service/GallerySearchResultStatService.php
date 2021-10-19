@@ -82,14 +82,14 @@ class GallerySearchResultStatService
             'CREATE TEMPORARY TABLE gsrss_temp_stat AS select  %s AS ItemGalleryId, 
                                 sum(Clicks) as Clicks, 
                                 sum(Views) as Views, 
-                                if(Views>0, Clicks/Views, null) AS Ctr 
+                                multiIf(Views>0, Clicks/Views, Clicks>0, Clicks/(Views+1), null) AS Ctr 
                         FROM %s 
                         WHERE %s=:zone_group 
                             AND %s=:domain
                             AND %s=:search_request
                             AND %s IN (%s)
                             GROUP BY %s
-                            HAVING Views>:min_views',
+                            HAVING (Views>:min_views OR Clicks>0)',
             ItemGalleryIdField::name(),
             $this->table,
             ZoneGroupField::name(),
