@@ -56,6 +56,7 @@ $ids = [
 ];
 
 $request = new GallerySearchResultStatRequest('demybus', 'hottmovs.com', 'flasher', $ids);
+$request->withMinViews(1000);
 $request->withLimitOffset(100, 0);
 $response = $service->getStats($request);
 
