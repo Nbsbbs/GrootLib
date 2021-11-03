@@ -4,7 +4,7 @@ namespace Noobus\GrootLib\Statistics\Request;
 
 class GallerySearchResultStatRequest
 {
-    public const DEFAULT_THUMB_RATING = 0.0102739;
+    public const DEFAULT_THUMB_RATING = 0.0022739;
 
     /**
      * @var array
