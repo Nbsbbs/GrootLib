@@ -90,7 +90,7 @@ class FixedQueryStatService
                             AND %s=:query_id
                             AND %s IN (select GalleryId from dgwdcs_temp_items)
                             GROUP BY %s
-                            HAVING Views>:min_views',
+                            HAVING Views>:min_views OR Clicks>0',
             ItemGalleryIdField::name(),
             $this->table,
             ZoneGroupField::name(),
@@ -148,7 +148,6 @@ class FixedQueryStatService
             'domain' => $request->getDomain(),
             'min_views' => $request->getMinViews(),
             'query_id' => $request->getQueryId(),
-            'gallery_ids' => implode(', ', $request->getIds()),
             'limit' => $request->getLimit(),
             'offset' => $request->getOffset(),
         ];
