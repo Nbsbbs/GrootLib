@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Noobus\GrootLib\Storage\Clickhouse\Entity\Field;
 
-class ZoneFixedQueryId implements FieldInterface
+class ZoneFixedQueryIdField implements FieldInterface
 {
     protected const NAME = 'ZoneFixedQueryId';
 

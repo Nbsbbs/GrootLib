@@ -22,6 +22,7 @@ use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\UserUserAgentField;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\ZoneCategoryIdField;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\ZoneDomainField;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\ZoneEmbedIdField;
+use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\ZoneFixedQueryIdField;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\ZoneGroupField;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\ZoneLanguageField;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\ZoneSearchKeywordField;
@@ -87,6 +88,7 @@ class RotationEventTable implements TableInterface
                                                                                       ->getTotalClicks()))->value();
         $row[ZoneTypeField::name()] = (new ZoneTypeField($event->getZone()->getType()))->value();
         $row[ZoneCategoryIdField::name()] = (new ZoneCategoryIdField($event->getZone()->getCategoryId() ?? 0))->value();
+        $row[ZoneFixedQueryIdField::name()] = (new ZoneFixedQueryIdField($event->getZone()->getFixedSearchId()) ?? 0)->value();
         $row[ZoneLanguageField::name()] = (new ZoneLanguageField($event->getZone()->getLanguage()))->value();
         $row[ZoneDomainField::name()] = (new ZoneDomainField($event->getZone()->getDomain()))->value();
         $row[ZoneSearchKeywordField::name()] = (new ZoneSearchKeywordField($event->getZone()

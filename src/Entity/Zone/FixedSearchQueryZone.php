@@ -99,7 +99,7 @@ class FixedSearchQueryZone extends AbstractZone implements ZoneInterface
      */
     public function getSearchKeywordTranslation(): string
     {
-        return '';
+        return $this->fullTextQuery;
     }
 
     /**
