@@ -50,10 +50,23 @@ class GallerySearchResultStatService
             return new GalleriesStatResponse();
         }
         $startTime = microtime(true);
-        $this->createPrimaryTempTable($request);
-        $this->createSecondaryTempTable($request);
+        try {
+            $this->createPrimaryTempTable($request);
+        } catch (\Throwable $e) {
+            throw new \Exception('Error creating first table: ' . $e->getMessage());
+        }
+        try {
+            $this->createSecondaryTempTable($request);
+        } catch (\Throwable $e) {
+            throw new \Exception('Error creating second table: ' . $e->getMessage());
+        }
 
-        $statement = $this->mainQuery($request);
+        try {
+            $statement = $this->mainQuery($request);
+        } catch (\Throwable $e) {
+            throw new \Exception('Error making main query: ' . $e->getMessage());
+        }
+
         $response = $this->processStatement($statement);
 
         $endTime = microtime(true);
