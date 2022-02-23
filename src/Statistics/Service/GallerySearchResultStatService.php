@@ -72,7 +72,8 @@ class GallerySearchResultStatService
             $request->getDefaultCtr()
         );
 
-        $this->client->select($query);
+        $result = $this->client->select($query);
+        $result->error();
     }
 
     /**
