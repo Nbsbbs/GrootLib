@@ -14,7 +14,7 @@ require_once '../bootstrap.php';
 $gearmanConfig = new GearmanConfig('213.152.180.23', 4730, 'groot');
 $cf = new GearmanFactory($gearmanConfig);
 $buffer = new GearmanEventBuffer($cf);
-$config = new ClickhouseConfig('127.0.0.1', '8123', 'test');
+$config = new ClickhouseConfig('127.0.0.1', '8124', 'test');
 $clientFactory = new ClientFactory($config);
 $storage = new ClickhouseStorage($clientFactory);
 $logger = new Logger('storage');
