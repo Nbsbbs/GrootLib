@@ -35,6 +35,7 @@ class ClientFactory
         ]);
         $client->database($this->config->getDatabase());
         $client->enableLogQueries(false);
+        $client->setTimeout($this->config->getTimeout());
 
         return $client;
     }

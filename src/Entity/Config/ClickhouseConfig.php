@@ -47,9 +47,30 @@ class ClickhouseConfig
     }
 
     /**
+     * @return float
+     */
+    public function getTimeout(): float
+    {
+        return $this->timeout;
+    }
+
+    /**
+     * @param float $timeout
+     */
+    public function setTimeout(float $timeout): void
+    {
+        $this->timeout = $timeout;
+    }
+
+    /**
      * @var string
      */
     private $host;
+
+    /**
+     * @var float|int
+     */
+    private float $timeout = 5;
 
     /**
      * @var string
