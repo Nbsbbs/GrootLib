@@ -53,7 +53,11 @@ class GallerySearchResultStatService
         try {
             $this->createPrimaryTempTable($request);
         } catch (\Throwable $e) {
-            throw new \Exception('Error creating first table: ' . $e->getMessage());
+            try {
+                $this->createPrimaryTempTable($request);
+            } catch (\Exception $e) {
+                throw new \Exception('Error creating first table (2nd attempt): ' . $e->getMessage());
+            }
         }
         try {
             $this->createSecondaryTempTable($request);
