@@ -150,7 +150,18 @@ class GallerySearchResultStatService
     {
         $response = new GalleriesStatResponse();
 
-        foreach ($statement->rows() as $row) {
+        try {
+            $rows = $statement->rows();
+        } catch (\Throwable $e) {
+            // retry
+            try {
+                $rows = $statement->rows();
+            } catch (\Throwable $e) {
+                throw new \Exception('Error fetching rows (2nd try): ' . $e->getMessage());
+            }
+        }
+
+        foreach ($rows as $row) {
             $thumbnailStat = new GalleryStat($row['GalleryId'], $row['Clicks'], $row['Views'], $row['Ctr']);
             $response->pushItem($thumbnailStat);
         }
