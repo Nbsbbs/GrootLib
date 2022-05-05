@@ -1,25 +1,28 @@
 {
-    "name": "noobus/groot-lib",
-    "description": "Statistical data processing library",
-    "type": "library",
-    "require": {
-        "phpunit/phpunit": "^9.1",
-        "smi2/phpclickhouse": "dev-master",
-      "ext-gearman": "*",
-      "ext-json": "*",
-        "monolog/monolog": "^2.0@dev"
-    },
-    "require-dev": {
-        "phpunit/phpunit": "^9.1"
-    },
-    "authors": [
-        {
-            "name": "Noobus",
-            "email": "nbsbbs@gmail.com"
-        }
-    ],
-    "minimum-stability": "dev",
-    "autoload": {
-        "psr-4": {"Noobus\\GrootLib\\": "src/"}
+  "name": "noobus/groot-lib",
+  "description": "Statistical data processing library",
+  "type": "library",
+  "require": {
+    "phpunit/phpunit": "^9.1",
+    "smi2/phpclickhouse": "dev-master",
+    "ext-gearman": "*",
+    "ext-json": "*",
+    "monolog/monolog": "^2.0@dev"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^9.1"
+  },
+  "authors": [
+    {
+      "name": "Noobus",
+      "email": "nbsbbs@gmail.com"
     }
+  ],
+  "minimum-stability": "dev",
+  "autoload": {
+    "psr-4": {
+      "Noobus\\GrootLib\\": "src/",
+      "Nbsbbs\\": "src/Nbsbbs"
+    }
+  }
 }
