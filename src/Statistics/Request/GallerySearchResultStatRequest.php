@@ -75,6 +75,10 @@ class GallerySearchResultStatRequest
             'd' => $this->domain,
             'r' => $this->translatedSearchQuery,
             'g' => $this->statisticsGroup,
+            'l' => $this->limit,
+            'o' => $this->offset,
+            'dfctr' => $this->defaultCtr,
+            'mv' => $this->minViews,
             'ids' => implode(',', $this->galleryIds)
         ];
 
