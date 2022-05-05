@@ -67,6 +67,21 @@ class GallerySearchResultStatRequest
     }
 
     /**
+     * @return string
+     */
+    public function cacheId(): string
+    {
+        $result = [
+            'd' => $this->domain,
+            'r' => $this->translatedSearchQuery,
+            'g' => $this->statisticsGroup,
+            'ids' => implode(',', $this->galleryIds)
+        ];
+
+        return md5(json_encode($result, JSON_UNESCAPED_UNICODE));
+    }
+
+    /**
      * @param int $minViews
      * @return $this
      */
