@@ -36,7 +36,7 @@ class GallerySearchResultStatService
         string        $table = 'test.stat_rotation_events_gallery_search_by_key'
     ) {
         $this->client = $clientFactory->getClient();
-        $this->client->useSession();
+        $this->client->useSession(md5(microtime(true)));
         $this->table = $table;
     }
 
