@@ -56,7 +56,7 @@ class GallerySearchResultStatService
             try {
                 $this->createPrimaryTempTable($request);
             } catch (\Exception $e) {
-                throw new \Exception('Error creating first table (2nd attempt): ' . $e->getMessage());
+                throw new \Exception('Error creating first table (2nd attempt): ' . $e->getMessage().' session '.$this->client->getSession());
             }
         }
 
