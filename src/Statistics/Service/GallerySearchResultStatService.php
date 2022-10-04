@@ -50,24 +50,12 @@ class GallerySearchResultStatService
             return new GalleriesStatResponse();
         }
         $startTime = microtime(true);
-        try {
-            $this->createPrimaryTempTable($request);
-        } catch (\Throwable $e) {
-            try {
-                $this->createPrimaryTempTable($request);
-            } catch (\Exception $e) {
-                throw new \Exception('Error creating first table (2nd attempt): ' . $e->getMessage().' session '.$this->client->getSession());
-            }
-        }
 
         try {
+            $this->createPrimaryTempTable($request);
             $this->createSecondaryTempTable($request);
         } catch (\Throwable $e) {
-            try {
-                $this->createSecondaryTempTable($request);
-            } catch (\Throwable $e) {
-                throw new \Exception('Error creating second table (2nd attempt): ' . $e->getMessage().' session '.$this->client->getSession());
-            }
+            throw new \Exception('Error creating table: ' . $e->getMessage().' session '.$this->client->getSession());
         }
 
         try {
