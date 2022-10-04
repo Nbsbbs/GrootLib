@@ -23,6 +23,15 @@ class ClientFactory
     }
 
     /**
+     * @param int $timeout
+     * @return void
+     */
+    public function setTimeout(int $timeout): void
+    {
+        $this->config->setTimeout($timeout);
+    }
+
+    /**
      * @return Client
      */
     public function getClient(): Client
