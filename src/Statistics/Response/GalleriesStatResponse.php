@@ -106,7 +106,7 @@ class GalleriesStatResponse
     }
 
     /**
-     * @return \Generator
+     * @return \Generator|GalleryStat[]
      */
     public function walkItems(): \Generator
     {
