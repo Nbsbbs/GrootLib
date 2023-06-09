@@ -18,7 +18,7 @@ class TitleZone extends AbstractZone implements ZoneInterface
     /**
      * @var string
      */
-    protected $type = ZoneType::TYPE_TITLE;
+    protected string $type = ZoneType::TYPE_TITLE;
 
     /**
      * CategoryZone constructor.
