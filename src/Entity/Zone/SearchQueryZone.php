@@ -83,7 +83,7 @@ class SearchQueryZone extends AbstractZone implements ZoneInterface
     /**
      * @inheritDoc
      */
-    public function unserialize($serialized)
+    public function unserialize(string $serialized)
     {
         $data = unserialize($serialized);
         $this->domain = $data['d'];

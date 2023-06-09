@@ -69,7 +69,7 @@ class TitleZone extends AbstractZone implements ZoneInterface
         ]);
     }
 
-    public function unserialize($serialized)
+    public function unserialize(string $serialized)
     {
         $data = unserialize($serialized);
         $this->domain = $data['d'];

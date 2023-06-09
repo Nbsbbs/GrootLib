@@ -119,7 +119,7 @@ abstract class AbstractZone implements \Serializable, ZoneInterface
     /**
      * @inheritDoc
      */
-    public function unserialize($serialized)
+    public function unserialize(string $serialized)
     {
         $data = unserialize($serialized);
         $this->domain = $data['domain'];
