@@ -30,7 +30,7 @@ do {
             exec('/usr/local/bin/sudo /root/bin/restart-clickhouse', $out);
             $result = implode(PHP_EOL, $out) . PHP_EOL;
             echo $result;
-            TelegramAlertSender::sendTelegramMessages("Here's what we got: " . PHP_EOL . $result);
+            // TelegramAlertSender::sendTelegramMessages("Here's what we got: " . PHP_EOL . $result);
             sleep(15);
             $isBeingRestarted = true;
         } else {
