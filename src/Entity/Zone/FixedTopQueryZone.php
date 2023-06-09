@@ -64,9 +64,9 @@ class FixedTopQueryZone extends AbstractZone implements ZoneInterface
     /**
      * @inheritDoc
      */
-    public function unserialize(string $serialized)
+    public function unserialize($data)
     {
-        $data = unserialize($serialized);
+        $data = unserialize($data);
         $this->domain = $data['d'];
         $this->group = $data['g'] ?? '';
         $this->language = $data['l'] ?? 'en';

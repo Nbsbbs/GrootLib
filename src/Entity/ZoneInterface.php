@@ -75,8 +75,8 @@ interface ZoneInterface extends \Serializable
     public function serialize();
 
     /**
-     * @param string $data
+     * @param $data
      * @return void
      */
-    public function unserialize(string $data);
+    public function unserialize($data);
 }

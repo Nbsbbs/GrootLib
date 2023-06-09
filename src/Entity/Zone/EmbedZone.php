@@ -85,9 +85,9 @@ class EmbedZone extends AbstractZone implements ZoneInterface
     /**
      * @inheritDoc
      */
-    public function unserialize(string $serialized)
+    public function unserialize($data)
     {
-        $data = unserialize($serialized);
+        $data = unserialize($data);
         $this->domain = $data['domain'];
         $this->group = $data['group'] ?? '';
         $this->language = $data['lang'] ?? 'en';
