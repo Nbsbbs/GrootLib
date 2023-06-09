@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Noobus\GrootLib\Entity\Zone;
 
+use Nbsbbs\Common\Orientation\OrientationFactory;
+use Nbsbbs\Common\Orientation\OrientationInterface;
 use Noobus\GrootLib\Entity\Zone\ItemValidation\ZoneOfNumericItemsTrait;
 use Noobus\GrootLib\Entity\ZoneInterface;
 
@@ -67,7 +69,7 @@ class CategoryZone extends AbstractZone implements ZoneInterface
     /**
      * @inheritDoc
      */
-    public function serialize()
+    public function __serialize()
     {
         return serialize([
             'd' => $this->domain,
@@ -76,13 +78,14 @@ class CategoryZone extends AbstractZone implements ZoneInterface
             'l' => $this->language,
             'q' => $this->searchQuery,
             'trq' => $this->translatedSearchQuery,
+            'o' => $this->orientation->getCode(),
         ]);
     }
 
     /**
      * @inheritDoc
      */
-    public function unserialize($serialized)
+    public function __unserialize($serialized)
     {
         $data = unserialize($serialized);
         $this->domain = $data['d'];
@@ -90,6 +93,7 @@ class CategoryZone extends AbstractZone implements ZoneInterface
         $this->group = $data['g'] ?? null;
         $this->language = $data['l'] ?? 'en';
         $this->searchQuery = $data['q'] ?? '';
+        $this->orientation = OrientationFactory::make($data['o'] ?? OrientationInterface::STRAIGHT);
         $this->translatedSearchQuery = $data['trq'] ?? '';
     }
 

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Noobus\GrootLib\Entity\Zone;
 
+use Nbsbbs\Common\Orientation\OrientationFactory;
+use Nbsbbs\Common\Orientation\OrientationInterface;
 use Noobus\GrootLib\Entity\Zone\ItemValidation\ZoneOfNumericItemsTrait;
 use Noobus\GrootLib\Entity\ZoneInterface;
 
@@ -49,24 +51,26 @@ class FixedTopQueryZone extends AbstractZone implements ZoneInterface
     /**
      * @inheritDoc
      */
-    public function serialize()
+    public function __serialize()
     {
         return serialize([
             'd' => $this->domain,
             'g' => $this->group,
             'l' => $this->language,
+            'o' => $this->orientation->getCode(),
         ]);
     }
 
     /**
      * @inheritDoc
      */
-    public function unserialize($serialized)
+    public function __unserialize($serialized)
     {
         $data = unserialize($serialized);
         $this->domain = $data['d'];
         $this->group = $data['g'] ?? '';
         $this->language = $data['l'] ?? 'en';
+        $this->orientation = OrientationFactory::make($data['o'] ?? OrientationInterface::STRAIGHT);
     }
 
     /**

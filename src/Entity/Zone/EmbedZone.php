@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Noobus\GrootLib\Entity\Zone;
 
+use Nbsbbs\Common\Orientation\OrientationFactory;
+use Nbsbbs\Common\Orientation\OrientationInterface;
 use Noobus\GrootLib\Entity\ZoneInterface;
 use Noobus\GrootLib\Entity\Zone\ItemValidation\ZoneOfNumericItemsTrait;
 
@@ -69,25 +71,27 @@ class EmbedZone extends AbstractZone implements ZoneInterface
     /**
      * @inheritDoc
      */
-    public function serialize()
+    public function __serialize()
     {
         return serialize([
             'domain' => $this->domain,
             'group' => $this->group,
             'lang' => $this->language,
             'embedId' => $this->embedId,
+            'orientation' => $this->orientation->getCode(),
         ]);
     }
 
     /**
      * @inheritDoc
      */
-    public function unserialize($serialized)
+    public function __unserialize($serialized)
     {
         $data = unserialize($serialized);
         $this->domain = $data['domain'];
         $this->group = $data['group'] ?? '';
         $this->language = $data['lang'] ?? 'en';
         $this->embedId = $data['embedId'];
+        $this->orientation = OrientationFactory::make($data['orientation'] ?? OrientationInterface::STRAIGHT);
     }
 }
