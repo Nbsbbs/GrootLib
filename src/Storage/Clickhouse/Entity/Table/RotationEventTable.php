@@ -9,6 +9,7 @@ use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\DateTimeField;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\EventTypeField;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\EventUrlField;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\EventZonePlaceIdField;
+use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\FieldInterface;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\ItemGalleryIdField;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\ItemRotationIdField;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\ItemThumbIdField;
@@ -25,6 +26,7 @@ use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\ZoneEmbedIdField;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\ZoneFixedQueryIdField;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\ZoneGroupField;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\ZoneLanguageField;
+use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\ZoneOrientationField;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\ZoneSearchKeywordField;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\ZoneSearchKeywordTranslationField;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\Field\ZoneTypeField;
@@ -96,6 +98,7 @@ class RotationEventTable implements TableInterface
         $row[ZoneSearchKeywordTranslationField::name()] = (new ZoneSearchKeywordTranslationField($event->getZone()
                                                                                                        ->getSearchKeywordTranslation()))->value();
         $row[ZoneEmbedIdField::name()] = (new ZoneEmbedIdField($event->getZone()->getEmbedId()))->value();
+        $row[ZoneOrientationField::name()] = (new ZoneOrientationField($event->getZone()->getOrientation()))->value();
         $row[ZoneGroupField::name()] = (new ZoneGroupField($event->getZone()->getGroup()))->value();
 
         $row[ItemThumbIdField::name()] = (new ItemThumbIdField($event->getItem()->getId()))->value();
@@ -144,6 +147,9 @@ class RotationEventTable implements TableInterface
     {
         $collection = [];
         foreach (self::FIELDS as $fieldClass) {
+            /**
+             * @var FieldInterface $fieldClass
+             */
             $collection[] = $fieldClass::toSql();
         }
         return implode(', ', $collection);

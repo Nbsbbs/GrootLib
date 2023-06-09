@@ -9,7 +9,6 @@ use Noobus\GrootLib\Entity\Event\RotationEvent;
 use Noobus\GrootLib\Entity\Event\ThumbEvent;
 use Noobus\GrootLib\Entity\EventInterface;
 use Noobus\GrootLib\Entity\Item\ItemType;
-use Noobus\GrootLib\Entity\Zone\CategoryZone;
 use Noobus\GrootLib\Storage\Clickhouse\ClientFactory;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\Table\RotationEventTable;
 use Noobus\GrootLib\Storage\Clickhouse\Entity\Table\ThumbEventTable;
@@ -54,7 +53,7 @@ class ClickhouseStorage implements EventStorageInterface
                 throw new \InvalidArgumentException('event must be instance of ThumbEvent to be processed by ThumbEventTable');
             }
         } catch (\Throwable $e) {
-            throw new \RuntimeException('Storage save error: '.$e->getMessage());
+            throw new \RuntimeException('Storage save error: ' . $e->getMessage());
         }
     }
 
