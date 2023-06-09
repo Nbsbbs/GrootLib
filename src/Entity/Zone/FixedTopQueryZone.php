@@ -51,7 +51,7 @@ class FixedTopQueryZone extends AbstractZone implements ZoneInterface
     /**
      * @inheritDoc
      */
-    public function __serialize()
+    public function serialize()
     {
         return serialize([
             'd' => $this->domain,
@@ -64,7 +64,7 @@ class FixedTopQueryZone extends AbstractZone implements ZoneInterface
     /**
      * @inheritDoc
      */
-    public function __unserialize($serialized)
+    public function unserialize($serialized)
     {
         $data = unserialize($serialized);
         $this->domain = $data['d'];

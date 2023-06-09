@@ -69,5 +69,14 @@ interface ZoneInterface extends \Serializable
      */
     public function isValidItemId(string $id): bool;
 
+    /**
+     * @return string|null
+     */
+    public function serialize();
 
+    /**
+     * @param string $data
+     * @return void
+     */
+    public function unserialize(string $data);
 }

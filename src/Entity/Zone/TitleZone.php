@@ -59,7 +59,7 @@ class TitleZone extends AbstractZone implements ZoneInterface
         return 0;
     }
 
-    public function __serialize()
+    public function serialize()
     {
         return serialize([
             'd' => $this->domain,
@@ -69,7 +69,7 @@ class TitleZone extends AbstractZone implements ZoneInterface
         ]);
     }
 
-    public function __unserialize($serialized)
+    public function unserialize($serialized)
     {
         $data = unserialize($serialized);
         $this->domain = $data['d'];

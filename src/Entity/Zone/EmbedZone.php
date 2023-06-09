@@ -71,7 +71,7 @@ class EmbedZone extends AbstractZone implements ZoneInterface
     /**
      * @inheritDoc
      */
-    public function __serialize()
+    public function serialize()
     {
         return serialize([
             'domain' => $this->domain,
@@ -85,7 +85,7 @@ class EmbedZone extends AbstractZone implements ZoneInterface
     /**
      * @inheritDoc
      */
-    public function __unserialize($serialized)
+    public function unserialize($serialized)
     {
         $data = unserialize($serialized);
         $this->domain = $data['domain'];
