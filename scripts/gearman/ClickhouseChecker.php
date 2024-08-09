@@ -13,6 +13,7 @@ $startStamp = time();
 
 $ud = new ThumbnailIdentifier(1, 2);
 $isBeingRestarted = false;
+TelegramAlertSender::init($_ENV['TELEGRAM_BOT'], $_ENV['TELEGRAM_API_TOKEN']); // no time to create proper initialization
 
 do {
     try {

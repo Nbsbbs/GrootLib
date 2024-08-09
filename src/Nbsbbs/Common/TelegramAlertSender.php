@@ -4,11 +4,40 @@ namespace Nbsbbs\Common;
 
 class TelegramAlertSender
 {
+    /**
+     * @var string
+     */
+    protected static string $telegramToken = '';
+
+    /**
+     * @var string
+     */
+    protected static string $telegramBot = '';
+
+    /**
+     * @param string $bot
+     * @param string $token
+     * @return void
+     */
+    public static function init(string $bot, string $token)
+    {
+        self::$telegramBot = $bot;
+        self::$telegramToken = $token;
+    }
+
+    /**
+     * @param string $message
+     * @return void
+     */
     public static function sendTelegramMessages(string $message): void
     {
-        $telegramToken = '486920176:AAEMefxmhSdimqGUCnIw0H5Wda4hnHvsYUM';
-        $bot_api_key = $telegramToken;
-        $bot_username = 'mixailo_bot';
+        if (self::$telegramToken === '') {
+            // no initialization
+            return;
+        }
+
+        $bot_api_key = self::$telegramToken;
+        $bot_username = self::$telegramBot;
         $date = new \DateTime();
         $message = $date->format('H:i:s. ').$message;
 
